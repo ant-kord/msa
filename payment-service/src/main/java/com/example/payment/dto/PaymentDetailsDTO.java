@@ -8,6 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class PaymentDetailsDTO {
-    private String cardLast4;
+    private String cardLast;
     private String provider;
 }

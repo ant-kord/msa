@@ -1,6 +1,6 @@
 package com.example.order.dto;
 
-import com.example.order.domain.OrderStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.time.OffsetDateTime;
@@ -11,10 +11,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Schema(description = "Ответ на создание заказа")
 public class OrderResponse {
+    @Schema(description = "ID заказа")
     private String id;
     private String customerId;
     private List<OrderItemRequest> items;
+    @Schema(description = "Сумма")
     private Double totalAmount;
     private OrderStatus status;
     private OffsetDateTime createdAt;

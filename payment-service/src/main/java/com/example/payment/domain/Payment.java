@@ -10,6 +10,7 @@ import java.util.UUID;
 @Table(name = "payments")
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -1,8 +1,8 @@
 package com.example.order.domain;
 
+import com.example.order.dto.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class Order {
 
     @Id
