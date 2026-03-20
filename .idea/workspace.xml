@@ -4,30 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a85ef5a-811c-424e-a408-0979a9ca0acd" name="Changes" comment="add files">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+    <list default="true" id="9a85ef5a-811c-424e-a408-0979a9ca0acd" name="Changes" comment="update module">
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/config/WebConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/constant/WebConstants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/domain/IdempotencyKey.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/exception/BaseServiceException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/exception/IdempotencyKeyExistsException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/interceptor/IdempotencyInterceptor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/repository/IdempotencyRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/wrapper/ResponseWrapperForIdempotencyIterceptorFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery-service/src/main/java/com/example/delivery/controller/DeliveryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/delivery-service/src/main/java/com/example/delivery/controller/DeliveryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery-service/src/main/java/com/example/delivery/dto/DeliveryRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/delivery-service/src/main/java/com/example/delivery/dto/DeliveryRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery-service/src/main/java/com/example/delivery/dto/DeliveryResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/delivery-service/src/main/java/com/example/delivery/dto/DeliveryResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/OrderServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/OrderServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/controller/OrderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/domain/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/domain/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/domain/OrderStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/dto/OrderStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/dto/OrderRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/dto/OrderRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/dto/OrderResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/dto/OrderResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/service/OrderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/controller/PaymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/controller/PaymentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/domain/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/domain/Payment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/domain/PaymentDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/domain/PaymentDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/dto/PaymentDetailsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/dto/PaymentDetailsDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/dto/PaymentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/dto/PaymentRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/dto/PaymentResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/dto/PaymentResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/service/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/service/PaymentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payment-service/src/test/java/com/example/payment/PaymentControllerIntegrationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/src/test/java/com/example/payment/PaymentControllerIntegrationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,12 +54,6 @@
     &quot;repository&quot;: &quot;msa&quot;
   }
 }</component>
-  <component name="MavenRunner">
-    <option name="skipTests" value="true" />
-  </component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -86,8 +66,6 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Maven.microservices [clean].executor": "Run",
-    "Maven.microservices [package].executor": "Run",
-    "Maven.microservices [verify].executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
@@ -98,31 +76,31 @@
     "Spring Boot.DeliveryServiceApplication.executor": "Run",
     "Spring Boot.OrderServiceApplication.executor": "Run",
     "Spring Boot.PaymentServiceApplication.executor": "Run",
-    "git-widget-placeholder": "hw3",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/workspace/msa/payment-service/src/main/java/com/example/payment/controller",
+    "last_opened_file_path": "D:/workspace/msa/payment-service/src/main/java/com/example/payment",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
+    "settings.editor.selected.configurable": "http.proxy",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\workspace\msa\payment-service\src\main\java\com\example\payment\controller" />
-      <recent name="D:\workspace\msa\delivery-service\src\main\java\com\example\delivery\controller" />
+      <recent name="D:\workspace\msa\payment-service\src\main\java\com\example\payment" />
       <recent name="D:\workspace\msa" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\workspace\msa" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.example.order.integration.payment.dto" />
-      <recent name="com.example.order.dto" />
+      <recent name="com.example.payment.repository" />
+      <recent name="com.example.payment.domain" />
+      <recent name="com.example.payment.dto" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -192,7 +170,6 @@
       <workItem from="1773640611564" duration="724000" />
       <workItem from="1773641385685" duration="2186000" />
       <workItem from="1773643593521" duration="6067000" />
-      <workItem from="1773762252447" duration="42056000" />
     </task>
     <task id="LOCAL-00001" summary="add files">
       <option name="closed" value="true" />
@@ -218,13 +195,13 @@
       <option name="project" value="LOCAL" />
       <updated>1773643108735</updated>
     </task>
-    <task id="LOCAL-00004" summary="add files">
+    <task id="LOCAL-00004" summary="update module">
       <option name="closed" value="true" />
-      <created>1773910732030</created>
+      <created>1774005349781</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1773910732030</updated>
+      <updated>1774005349781</updated>
     </task>
     <option name="localTasksCounter" value="5" />
     <servers />
@@ -245,6 +222,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add files" />
-    <option name="LAST_COMMIT_MESSAGE" value="add files" />
+    <MESSAGE value="update module" />
+    <option name="LAST_COMMIT_MESSAGE" value="update module" />
   </component>
 </project>
