@@ -1,4 +1,4 @@
-package com.example.payment.dto;
+package com.example.payment.enums;
 
 public enum PaymentStatus {
     PENDING,
