@@ -6,13 +6,14 @@ import com.example.payment.dto.PaymentDetailsDTO;
 import com.example.payment.dto.PaymentRequest;
 import com.example.payment.repository.PaymentRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
+@Slf4j
 public class PaymentService {
 
     private final PaymentRepository repo;
@@ -21,7 +22,9 @@ public class PaymentService {
         this.repo = repo;
     }
 
+    @Transactional
     public Payment createPayment(PaymentRequest request) {
+        log.info("Create payment request: {}", request);
         validate(request);
         Payment p = Payment.builder()
                 .orderId(request.getOrderId())
@@ -29,6 +32,7 @@ public class PaymentService {
                 .method(request.getMethod())
                 .paymentDetails(mapDetails(request.getPaymentDetails()))
                 .build();
+        log.info("Payment created: {}", p);
         return repo.save(p);
     }
 
@@ -70,11 +74,11 @@ public class PaymentService {
             throw new IllegalArgumentException("orderId is required");
         if (request.getAmount() == null || request.getAmount() <= 0)
             throw new IllegalArgumentException("amount must be greater than 0");
-        if (request.getMethod() == null) throw new IllegalArgumentException("method is required");
+        //if (request.getMethod() == null) throw new IllegalArgumentException("method is required");
     }
 
     private PaymentDetails mapDetails(PaymentDetailsDTO dto) {
         if (dto == null) return null;
-        return PaymentDetails.builder().cardLast4(dto.getCardLast4()).provider(dto.getProvider()).build();
+        return PaymentDetails.builder().cardLast(dto.getCardLast()).provider(dto.getProvider()).build();
     }
 }

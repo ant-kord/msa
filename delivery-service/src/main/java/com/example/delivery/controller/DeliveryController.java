@@ -1,10 +1,12 @@
 package com.example.delivery.controller;
 
+import com.example.delivery.controller.doc.DeliveryControllerDoc;
 import com.example.delivery.domain.Delivery;
 import com.example.delivery.dto.AddressDTO;
 import com.example.delivery.dto.DeliveryRequest;
 import com.example.delivery.dto.DeliveryResponse;
 import com.example.delivery.service.DeliveryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,18 +18,16 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/deliveries")
-public class DeliveryController {
+@RequiredArgsConstructor
+public class DeliveryController implements DeliveryControllerDoc {
 
     private final DeliveryService svc;
 
-    public DeliveryController(DeliveryService svc) {
-        this.svc = svc;
-    }
-
+    @Override
     @PostMapping
-    public ResponseEntity<DeliveryResponse> create(@RequestBody DeliveryRequest req) {
+    public ResponseEntity<DeliveryResponse> createDelivery(@RequestBody DeliveryRequest request) {
         try {
-            Delivery d = svc.createDelivery(req);
+            Delivery d = svc.createDelivery(request);
             return new ResponseEntity<>(toResponse(d), HttpStatus.CREATED);
         } catch (IllegalArgumentException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
@@ -36,22 +36,25 @@ public class DeliveryController {
         }
     }
 
+    @Override
     @GetMapping("/{id}")
-    public ResponseEntity<DeliveryResponse> get(@PathVariable String id) {
+    public ResponseEntity<DeliveryResponse> getDelivery(@PathVariable String id) {
         return svc.getDelivery(id)
                 .map(d -> ResponseEntity.ok(toResponse(d)))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Delivery not found"));
     }
 
+    @Override
     @GetMapping
-    public ResponseEntity<List<DeliveryResponse>> list() {
+    public ResponseEntity<List<DeliveryResponse>> listDelivers() {
         return ResponseEntity.ok(svc.listDeliveries().stream().map(this::toResponse).collect(Collectors.toList()));
     }
 
+    @Override
     @PutMapping("/{id}")
-    public ResponseEntity<DeliveryResponse> update(@PathVariable String id, @RequestBody DeliveryRequest req) {
+    public ResponseEntity<DeliveryResponse> updateDelivery(@PathVariable String id, @RequestBody DeliveryRequest request) {
         try {
-            return svc.updateDelivery(id, req)
+            return svc.updateDelivery(id, request)
                     .map(d -> ResponseEntity.ok(toResponse(d)))
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Delivery not found"));
         } catch (IllegalArgumentException ex) {
@@ -59,8 +62,9 @@ public class DeliveryController {
         }
     }
 
+    @Override
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
+    public ResponseEntity<Void> deleteDelivery(@PathVariable String id) {
         boolean deleted = svc.deleteDelivery(id);
         if (deleted) return ResponseEntity.noContent().build();
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Delivery not found");

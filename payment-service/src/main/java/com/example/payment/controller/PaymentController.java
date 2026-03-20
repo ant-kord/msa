@@ -1,10 +1,13 @@
 package com.example.payment.controller;
 
+import com.example.payment.controller.doc.PaymentControllerDoc;
 import com.example.payment.domain.Payment;
 import com.example.payment.dto.PaymentDetailsDTO;
 import com.example.payment.dto.PaymentRequest;
 import com.example.payment.dto.PaymentResponse;
 import com.example.payment.service.PaymentService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,18 +19,19 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/payments")
-public class PaymentController {
+@RequiredArgsConstructor
+@Slf4j
+public class PaymentController implements PaymentControllerDoc {
 
     private final PaymentService svc;
 
-    public PaymentController(PaymentService svc) {
-        this.svc = svc;
-    }
-
+    @Override
     @PostMapping
-    public ResponseEntity<PaymentResponse> create(@RequestBody PaymentRequest req) {
+    public ResponseEntity<PaymentResponse> createPayment(@RequestBody PaymentRequest req) {
         try {
+            log.info("Create payment request: {}", req);
             Payment p = svc.createPayment(req);
+            log.info("Created Payment {}", p);
             return new ResponseEntity<>(toResponse(p), HttpStatus.CREATED);
         } catch (IllegalArgumentException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
@@ -36,20 +40,23 @@ public class PaymentController {
         }
     }
 
+    @Override
     @GetMapping("/{id}")
-    public ResponseEntity<PaymentResponse> get(@PathVariable String id) {
+    public ResponseEntity<PaymentResponse> getPayment(@PathVariable String id) {
         return svc.getPayment(id)
                 .map(p -> ResponseEntity.ok(toResponse(p)))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Payment not found"));
     }
 
+    @Override
     @GetMapping
-    public ResponseEntity<List<PaymentResponse>> list() {
+    public ResponseEntity<List<PaymentResponse>> listPayments() {
         return ResponseEntity.ok(svc.listPayments().stream().map(this::toResponse).collect(Collectors.toList()));
     }
 
+    @Override
     @PutMapping("/{id}")
-    public ResponseEntity<PaymentResponse> update(@PathVariable String id, @RequestBody PaymentRequest req) {
+    public ResponseEntity<PaymentResponse> updatePayment(@PathVariable String id, @RequestBody PaymentRequest req) {
         try {
             return svc.updatePayment(id, req)
                     .map(p -> ResponseEntity.ok(toResponse(p)))
@@ -59,8 +66,9 @@ public class PaymentController {
         }
     }
 
+    @Override
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
+    public ResponseEntity<Void> deletePayment(@PathVariable String id) {
         boolean deleted = svc.deletePayment(id);
         if (deleted) return ResponseEntity.noContent().build();
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Payment not found");
@@ -70,7 +78,7 @@ public class PaymentController {
         PaymentDetailsDTO details = null;
         if (p.getPaymentDetails() != null) {
             details = PaymentDetailsDTO.builder()
-                    .cardLast4(p.getPaymentDetails().getCardLast4())
+                    .cardLast(p.getPaymentDetails().getCardLast())
                     .provider(p.getPaymentDetails().getProvider())
                     .build();
         }

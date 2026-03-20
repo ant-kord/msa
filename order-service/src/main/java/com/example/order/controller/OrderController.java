@@ -1,10 +1,12 @@
 package com.example.order.controller;
 
+import com.example.order.controller.doc.OrderControllerDoc;
 import com.example.order.domain.Order;
-import com.example.order.domain.OrderStatus;
+import com.example.order.dto.OrderStatus;
 import com.example.order.dto.OrderRequest;
 import com.example.order.dto.OrderResponse;
 import com.example.order.service.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +18,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/orders")
-public class OrderController {
+@RequiredArgsConstructor
+public class OrderController implements OrderControllerDoc {
 
     private final OrderService orderService;
 
-    public OrderController(OrderService svc) {
-        this.orderService = svc;
-    }
-
+    @Override
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest request) {
         try {
@@ -36,6 +36,7 @@ public class OrderController {
         }
     }
 
+    @Override
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> getOrder(@PathVariable String id) {
         return orderService.getOrder(id)
@@ -43,11 +44,13 @@ public class OrderController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<List<OrderResponse>> listOrders() {
         return ResponseEntity.ok(orderService.listOrders().stream().map(this::toResponse).collect(Collectors.toList()));
     }
 
+    @Override
     @PutMapping("/{id}")
     public ResponseEntity<OrderResponse> updateOrder(@PathVariable String id, @RequestBody OrderRequest request,
                                                      @RequestParam(value = "status", required = false) OrderStatus status) {
@@ -60,6 +63,7 @@ public class OrderController {
         }
     }
 
+    @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable String id) {
         boolean deleted = orderService.deleteOrder(id);

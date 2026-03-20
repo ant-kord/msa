@@ -30,7 +30,7 @@ public class PaymentControllerIntegrationTest {
                 .orderId("11111111-1111-1111-1111-111111111111")
                 .amount(21.0)
                 .method(PaymentMethod.CREDIT_CARD)
-                .paymentDetails(PaymentDetailsDTO.builder().cardLast4("4242").build())
+                .paymentDetails(PaymentDetailsDTO.builder().cardLast("4242").build())
                 .build();
 
         var createResp = client.post().uri("/payments")

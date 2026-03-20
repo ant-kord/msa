@@ -1,16 +1,14 @@
-package com.example.payment.domain;
+package com.example.order.integration.payment.dto;
 
-import jakarta.persistence.Embeddable;
 import lombok.*;
 
-@Embeddable
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PaymentDetails {
+public class PaymentDetailsDTO {
     private String cardLast;
     private String provider;
 }

@@ -1,12 +1,18 @@
 package com.example.order.service;
 
+import com.example.order.integration.payment.client.feign.PaymentClient;
 import com.example.order.domain.Order;
 import com.example.order.domain.OrderItem;
-import com.example.order.domain.OrderStatus;
+import com.example.order.dto.OrderStatus;
 import com.example.order.dto.OrderItemRequest;
 import com.example.order.dto.OrderRequest;
+import com.example.order.integration.payment.dto.PaymentMethod;
+import com.example.order.integration.payment.dto.PaymentRequest;
+import com.example.order.integration.payment.dto.PaymentResponse;
 import com.example.order.repository.OrderRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -15,15 +21,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@RequiredArgsConstructor
+@Slf4j
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final PaymentClient paymentClient;
 
-    public OrderService(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
-
+    @Transactional
     public Order createOrder(OrderRequest request) {
         validateRequest(request);
 
@@ -34,7 +39,30 @@ public class OrderService {
                 .build();
 
         order.setTotalAmount(order.computeTotal());
-        return orderRepository.save(order);
+        Order saved = orderRepository.save(order);
+
+        log.info("Order created: {}", saved);
+
+        PaymentRequest paymentReq = PaymentRequest.builder()
+                .orderId(saved.getId())
+                .amount(saved.getTotalAmount())
+                .method(PaymentMethod.CREDIT_CARD)
+                .paymentDetails(null)
+                .build();
+
+        try {
+            PaymentResponse paymentResp = paymentClient.createPayment(paymentReq);
+            log.info("Payment created: {}", paymentResp);
+            // при необходимости — обновить статус заказа в зависимости от ответа платежа
+            saved.setStatus(OrderStatus.PAID); // пример, если хотите
+            orderRepository.save(saved);
+            log.info("Order save: {}", saved);
+        } catch (Exception ex) {
+            // логирование и/или обработка ошибки: по бизнес-логике можно откатить создание заказа или ставить статус PAYMENT_FAILED
+            throw new IllegalStateException("Payment creation failed: " + ex.getMessage(), ex);
+        }
+
+        return saved;
     }
 
     public Optional<Order> getOrder(String id) {

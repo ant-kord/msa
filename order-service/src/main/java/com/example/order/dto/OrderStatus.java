@@ -1,9 +1,9 @@
-package com.example.order.domain;
+package com.example.order.dto;
 
 public enum OrderStatus {
     PENDING,
     CONFIRMED,
     CANCELLED,
     SHIPPED,
-    COMPLETED
+    PAID, COMPLETED
 }
