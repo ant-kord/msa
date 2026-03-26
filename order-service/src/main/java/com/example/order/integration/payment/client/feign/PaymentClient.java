@@ -21,10 +21,11 @@ public class PaymentClient {
     private final PaymentFeignClient paymentFeignClient;
     private final JsonMapper jsonMapper;
 
-    public PaymentResponse createPayment(PaymentRequest request) {
+    public PaymentResponse createPayment(PaymentRequest request, String idempotencyKey) {
         try {
             log.info("Create payment request: {}", request);
-            return paymentFeignClient.createPayment(request);
+            log.info("Idempotency key: {}", idempotencyKey);
+            return paymentFeignClient.createPayment(request, idempotencyKey);
         } catch (FeignException ex) {
            return processException(ex);
         }

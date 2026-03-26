@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderController implements OrderControllerDoc {
 
+    private static final String IDEMPOTENT_KEY_HEADER_NAME = "X-Idempotency-Key";
+
     private final OrderService orderService;
 
     @Override

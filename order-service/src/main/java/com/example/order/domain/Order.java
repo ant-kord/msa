@@ -59,6 +59,6 @@ public class Order {
 
     public double computeTotal() {
         if (items == null) return 0.0;
-        return items.stream().collect(Collectors.summingDouble(i -> i.getPrice() * i.getQuantity()));
+        return items.stream().mapToDouble(i -> i.getPrice() * i.getQuantity()).sum();
     }
 }

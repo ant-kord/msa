@@ -33,6 +33,7 @@ public class OrderService {
         validateRequest(request);
 
         Order order = Order.builder()
+                .id(request.getOrderId())
                 .customerId(request.getCustomerId())
                 .items(mapItems(request.getItems()))
                 .status(OrderStatus.PENDING)
@@ -51,7 +52,7 @@ public class OrderService {
                 .build();
 
         try {
-            PaymentResponse paymentResp = paymentClient.createPayment(paymentReq);
+            PaymentResponse paymentResp = paymentClient.createPayment(paymentReq, saved.getId());
             log.info("Payment created: {}", paymentResp);
             // при необходимости — обновить статус заказа в зависимости от ответа платежа
             saved.setStatus(OrderStatus.PAID); // пример, если хотите

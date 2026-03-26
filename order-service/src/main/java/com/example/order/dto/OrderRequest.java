@@ -14,5 +14,7 @@ import java.util.List;
 public class OrderRequest {
     @Schema(description = "ID клиента")
     private String customerId;
+    @Schema(description = "ID заказа")
+    private String orderId;
     private List<OrderItemRequest> items;
 }
