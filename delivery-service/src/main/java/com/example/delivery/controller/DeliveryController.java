@@ -6,6 +6,7 @@ import com.example.delivery.dto.AddressDTO;
 import com.example.delivery.dto.DeliveryRequest;
 import com.example.delivery.dto.DeliveryResponse;
 import com.example.delivery.service.DeliveryService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ public class DeliveryController implements DeliveryControllerDoc {
 
     @Override
     @PostMapping
+    @CircuitBreaker(name = "deliveryService", fallbackMethod = "createDeliveryFallback")
     public ResponseEntity<DeliveryResponse> createDelivery(@RequestBody DeliveryRequest request) {
         try {
             Delivery d = svc.createDelivery(request);
@@ -68,6 +70,10 @@ public class DeliveryController implements DeliveryControllerDoc {
         boolean deleted = svc.deleteDelivery(id);
         if (deleted) return ResponseEntity.noContent().build();
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Delivery not found");
+    }
+
+    public ResponseEntity<DeliveryResponse> createDeliveryFallback(DeliveryRequest request, Throwable t) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
     }
 
     private DeliveryResponse toResponse(Delivery d) {
