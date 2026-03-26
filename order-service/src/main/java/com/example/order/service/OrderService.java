@@ -18,6 +18,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,7 +34,7 @@ public class OrderService {
         validateRequest(request);
 
         Order order = Order.builder()
-                .id(request.getOrderId())
+                //.id(request.getOrderId())
                 .customerId(request.getCustomerId())
                 .items(mapItems(request.getItems()))
                 .status(OrderStatus.PENDING)
@@ -51,8 +52,10 @@ public class OrderService {
                 .paymentDetails(null)
                 .build();
 
+        String idempotencyKey = UUID.randomUUID().toString();
+
         try {
-            PaymentResponse paymentResp = paymentClient.createPayment(paymentReq, saved.getId());
+            PaymentResponse paymentResp = paymentClient.createPayment(paymentReq, idempotencyKey);
             log.info("Payment created: {}", paymentResp);
             // при необходимости — обновить статус заказа в зависимости от ответа платежа
             saved.setStatus(OrderStatus.PAID); // пример, если хотите
