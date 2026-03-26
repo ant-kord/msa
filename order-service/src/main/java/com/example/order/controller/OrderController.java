@@ -28,14 +28,14 @@ public class OrderController implements OrderControllerDoc {
 
     @Override
     @PostMapping
-    @CircuitBreaker(name = "orderService", fallbackMethod = "createOrderFallback")
+    @CircuitBreaker(name = "orderServiceCircuitBreaker", fallbackMethod = "createOrderFallback")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest request) {
         try {
             // Эмуляция случайного сбоя (500 ошибка) для теста Retry
-            if (Math.random() < 0.7) {
+            /*if (Math.random() < 0.7) {
                 log.warn("Имитация сетевого сбоя для заказа: {}", request.getOrderId());
                 return ResponseEntity.status(500).build();
-            }
+            }*/
 
             Order created = orderService.createOrder(request);
             return new ResponseEntity<>(toResponse(created), HttpStatus.CREATED);

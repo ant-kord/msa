@@ -7,6 +7,8 @@ import com.example.payment.dto.PaymentRequest;
 import com.example.payment.dto.PaymentResponse;
 import com.example.payment.service.PaymentService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,7 @@ public class PaymentController implements PaymentControllerDoc {
     @Override
     @PostMapping
     @CircuitBreaker(name = "paymentService", fallbackMethod = "createPaymentFallback")
+    @RateLimiter(name = "paymentServiceLimiter", fallbackMethod = "rateLimitingFallback")
     public ResponseEntity<PaymentResponse> createPayment(@RequestBody PaymentRequest req) {
         try {
 
@@ -79,6 +82,11 @@ public class PaymentController implements PaymentControllerDoc {
 
     public ResponseEntity<PaymentResponse> createPaymentFallback(PaymentRequest request, Throwable t) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+    }
+
+    public ResponseEntity<String> rateLimitingFallback(RequestNotPermitted ex) {
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                .body("Payment server is overloaded. Try again later.");
     }
 
     private PaymentResponse toResponse(Payment p) {

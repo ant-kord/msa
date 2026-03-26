@@ -38,7 +38,7 @@ resilience4j:
 
   circuitbreaker:
     instances:
-      orderService:
+      orderServiceCircuitBreaker:
         registerHealthIndicator: true     # Включить мониторинг состояния цепи
         slidingWindowSize: 50             # Размер окна для оценки ошибок (сколько вызовов учитывается)
         failureRateThreshold: 50          # Процент ошибок, при котором цепь откроется
@@ -48,7 +48,7 @@ resilience4j:
         ignoreExceptions:
           - java.lang.RuntimeException    # Исключения, которые игнорируются при оценке ошибок
 
-      paymentService:
+      paymentServiceCircuitBreaker:
         registerHealthIndicator: true     # Включить мониторинг состояния цепи
         slidingWindowSize: 50             # Размер окна для оценки ошибок (сколько вызовов учитывается)
         failureRateThreshold: 30          # Процент ошибок, при котором цепь откроется
@@ -59,4 +59,17 @@ resilience4j:
           - feign.FeignException          # Исключения, которые считаются ошибками
         ignoreExceptions:
           - java.lang.RuntimeException    # Исключения, которые игнорируются при оценке ошибок
+
+  ratelimiter:
+    instances:
+      paymentClientRateLimiter:
+        limitForPeriod: 10      # Максимальное количество вызовов за один период (например, за 1 секунду)
+        limitRefreshPeriod: 1s  # Период, за который сбрасывается счетчик лимитов (например, 1 секунда)
+        timeoutDuration: 0s     # Время ожидания, если лимит достигнут; 0 означает сразу отказ, без ожидания
+
+  bulkhead:
+    instances:
+      paymentClientBulkhead:
+        maxConcurrentCalls: 5  # Максимальное число параллельных вызовов, разрешенных одновременно
+        maxWaitDuration: 0s    # Время ожидания, если все слоты заняты; 0 — отказ сразу, без ожидания
 
