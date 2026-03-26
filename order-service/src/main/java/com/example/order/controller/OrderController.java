@@ -6,7 +6,9 @@ import com.example.order.dto.OrderStatus;
 import com.example.order.dto.OrderRequest;
 import com.example.order.dto.OrderResponse;
 import com.example.order.service.OrderService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,16 +21,22 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/orders")
 @RequiredArgsConstructor
+@Slf4j
 public class OrderController implements OrderControllerDoc {
-
-    private static final String IDEMPOTENT_KEY_HEADER_NAME = "X-Idempotency-Key";
 
     private final OrderService orderService;
 
     @Override
     @PostMapping
+    @CircuitBreaker(name = "orderService", fallbackMethod = "createOrderFallback")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest request) {
         try {
+            // Эмуляция случайного сбоя (500 ошибка) для теста Retry
+            if (Math.random() < 0.7) {
+                log.warn("Имитация сетевого сбоя для заказа: {}", request.getOrderId());
+                return ResponseEntity.status(500).build();
+            }
+
             Order created = orderService.createOrder(request);
             return new ResponseEntity<>(toResponse(created), HttpStatus.CREATED);
         } catch (IllegalArgumentException ex) {
@@ -71,6 +79,10 @@ public class OrderController implements OrderControllerDoc {
         boolean deleted = orderService.deleteOrder(id);
         if (deleted) return ResponseEntity.noContent().build();
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found");
+    }
+
+    public ResponseEntity<OrderResponse> createOrderFallback(OrderRequest request, Throwable t) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
     }
 
     private OrderResponse toResponse(Order o) {

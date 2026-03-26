@@ -4,6 +4,8 @@ import com.example.order.integration.payment.dto.PaymentRequest;
 import com.example.order.integration.payment.dto.PaymentResponse;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import feign.FeignException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
@@ -21,6 +23,8 @@ public class PaymentClient {
     private final PaymentFeignClient paymentFeignClient;
     private final JsonMapper jsonMapper;
 
+    @Retry(name = "paymentServiceRetry")
+    @CircuitBreaker(name = "paymentService")
     public PaymentResponse createPayment(PaymentRequest request, String idempotencyKey) {
         try {
             log.info("Create payment request: {}", request);

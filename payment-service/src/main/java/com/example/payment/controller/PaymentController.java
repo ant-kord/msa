@@ -6,6 +6,7 @@ import com.example.payment.dto.PaymentDetailsDTO;
 import com.example.payment.dto.PaymentRequest;
 import com.example.payment.dto.PaymentResponse;
 import com.example.payment.service.PaymentService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,8 +28,10 @@ public class PaymentController implements PaymentControllerDoc {
 
     @Override
     @PostMapping
+    @CircuitBreaker(name = "paymentService", fallbackMethod = "createPaymentFallback")
     public ResponseEntity<PaymentResponse> createPayment(@RequestBody PaymentRequest req) {
         try {
+
             log.info("Create payment request: {}", req);
             Payment p = svc.createPayment(req);
             log.info("Created Payment {}", p);
@@ -72,6 +75,10 @@ public class PaymentController implements PaymentControllerDoc {
         boolean deleted = svc.deletePayment(id);
         if (deleted) return ResponseEntity.noContent().build();
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Payment not found");
+    }
+
+    public ResponseEntity<PaymentResponse> createPaymentFallback(PaymentRequest request, Throwable t) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
     }
 
     private PaymentResponse toResponse(Payment p) {

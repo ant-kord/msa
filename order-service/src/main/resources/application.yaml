@@ -1,0 +1,62 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:ordersdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+logging:
+  level:
+    web: DEBUG
+
+payment:
+  service:
+    url: http://localhost:8082
+
+resilience4j:
+  retry:
+    instances:
+      paymentServiceRetry:
+        maxAttempts: 3                 # Максимальное число попыток выполнения метода (включая первую)
+        waitDuration: 500ms            # Время ожидания между попытками
+        retryExceptions:
+          - feign.FeignException       # Исключения, при которых происходит повторная попытка
+        ignoreExceptions:
+          - java.lang.RuntimeException # Исключения, игнорируемые для повторных попыток
+
+  circuitbreaker:
+    instances:
+      orderService:
+        registerHealthIndicator: true     # Включить мониторинг состояния цепи
+        slidingWindowSize: 50             # Размер окна для оценки ошибок (сколько вызовов учитывается)
+        failureRateThreshold: 50          # Процент ошибок, при котором цепь откроется
+        waitDurationInOpenState: 30s      # Время, в течение которого цепь останется открытой
+        permittedNumberOfCallsInHalfOpenState: 10 # Количество вызовов в полузакрытом состоянии для проверки
+        minimumNumberOfCalls: 5           # Минимальное число вызовов для оценки состояния цепи
+        ignoreExceptions:
+          - java.lang.RuntimeException    # Исключения, которые игнорируются при оценке ошибок
+
+      paymentService:
+        registerHealthIndicator: true     # Включить мониторинг состояния цепи
+        slidingWindowSize: 50             # Размер окна для оценки ошибок (сколько вызовов учитывается)
+        failureRateThreshold: 30          # Процент ошибок, при котором цепь откроется
+        waitDurationInOpenState: 30s      # Время, в течение которого цепь останется открытой
+        permittedNumberOfCallsInHalfOpenState: 10 # Количество вызовов в полузакрытом состоянии для проверки
+        minimumNumberOfCalls: 3         # Минимальное число вызовов для оценки состояния цепи
+        recordExceptions:
+          - feign.FeignException          # Исключения, которые считаются ошибками
+        ignoreExceptions:
+          - java.lang.RuntimeException    # Исключения, которые игнорируются при оценке ошибок
+

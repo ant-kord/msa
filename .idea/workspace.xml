@@ -4,15 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a85ef5a-811c-424e-a408-0979a9ca0acd" name="Changes" comment="add files">
-      <change afterPath="$PROJECT_DIR$/order-service/src/test/java/com/example/order/OrderControllerTest.java" afterDir="false" />
+    <list default="true" id="9a85ef5a-811c-424e-a408-0979a9ca0acd" name="Changes" comment="update">
+      <change afterPath="$PROJECT_DIR$/delivery-service/src/main/resources/application.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/order-service/src/main/resources/application.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/resources/application.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery-service/src/main/java/com/example/delivery/controller/DeliveryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/delivery-service/src/main/java/com/example/delivery/controller/DeliveryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery-service/src/main/resources/application.properties" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/controller/OrderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/domain/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/domain/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/dto/OrderRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/dto/OrderRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/integration/payment/client/feign/PaymentClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/integration/payment/client/feign/PaymentClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/integration/payment/client/feign/PaymentFeignClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/integration/payment/client/feign/PaymentFeignClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/example/order/service/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-service/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/controller/PaymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/example/payment/controller/PaymentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/src/main/resources/application.properties" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +83,7 @@
     "Spring Boot.PaymentServiceApplication.executor": "Run",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/workspace73/asstra-portal",
+    "last_opened_file_path": "D:/workspace/msa/delivery-service/src/main/resources",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -93,6 +96,9 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workspace\msa\delivery-service\src\main\resources" />
+      <recent name="D:\workspace\msa\order-service\src\main\resources" />
+      <recent name="D:\workspace\msa\payment-service\src\main\resources" />
       <recent name="D:\workspace\msa" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -245,7 +251,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773643108735</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="update">
+      <option name="closed" value="true" />
+      <created>1774517566878</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1774517566878</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -264,6 +278,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add files" />
-    <option name="LAST_COMMIT_MESSAGE" value="add files" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
 </project>
