@@ -43,8 +43,8 @@ resilience4j:
         slidingWindowSize: 50             # Размер окна для оценки ошибок (сколько вызовов учитывается)
         failureRateThreshold: 50          # Процент ошибок, при котором цепь откроется
         waitDurationInOpenState: 30s      # Время, в течение которого цепь останется открытой
-        permittedNumberOfCallsInHalfOpenState: 10 # Количество вызовов в полузакрытом состоянии для проверки
-        minimumNumberOfCalls: 5           # Минимальное число вызовов для оценки состояния цепи
+        permittedNumberOfCallsInHalfOpenState: 20 # Количество вызовов в полузакрытом состоянии для проверки
+        minimumNumberOfCalls: 5          # Минимальное число вызовов для оценки состояния цепи
         ignoreExceptions:
           - java.lang.RuntimeException    # Исключения, которые игнорируются при оценке ошибок
 
@@ -63,13 +63,13 @@ resilience4j:
   ratelimiter:
     instances:
       paymentClientRateLimiter:
-        limitForPeriod: 10      # Максимальное количество вызовов за один период (например, за 1 секунду)
+        limitForPeriod: 100      # Максимальное количество вызовов за один период (например, за 1 секунду)
         limitRefreshPeriod: 1s  # Период, за который сбрасывается счетчик лимитов (например, 1 секунда)
         timeoutDuration: 0s     # Время ожидания, если лимит достигнут; 0 означает сразу отказ, без ожидания
 
   bulkhead:
     instances:
       paymentClientBulkhead:
-        maxConcurrentCalls: 5  # Максимальное число параллельных вызовов, разрешенных одновременно
+        maxConcurrentCalls: 12  # Максимальное число параллельных вызовов, разрешенных одновременно
         maxWaitDuration: 0s    # Время ожидания, если все слоты заняты; 0 — отказ сразу, без ожидания
 

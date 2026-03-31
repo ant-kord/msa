@@ -31,7 +31,6 @@ public class PaymentController implements PaymentControllerDoc {
     @Override
     @PostMapping
     @CircuitBreaker(name = "paymentService", fallbackMethod = "createPaymentFallback")
-    @RateLimiter(name = "paymentServiceLimiter", fallbackMethod = "rateLimitingFallback")
     public ResponseEntity<PaymentResponse> createPayment(@RequestBody PaymentRequest req) {
         try {
 
