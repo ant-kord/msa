@@ -49,13 +49,13 @@ public class RateLimitFilter implements Filter {
 
     }
 
-    // Настройка лимита: 10 запросов в минуту
+    // Настройка лимита: 100 запросов в секунду
     private Bucket createNewBucket() {
         Bandwidth limit = Bandwidth
                 .builder()
-                .capacity(50)   // Максимальное число токенов (разрешенных запросов)
-                .refillIntervally(10, Duration.ofSeconds(1))    // Пополнение бакета 10-ю токенами каждую 1 минуту
-                .build();
+                .capacity(5)   // Максимальное число токенов (разрешенных запросов)
+                .refillIntervally(5, Duration.ofMinutes(1))    // Пополнение бакета 100-ми токенами
+                .build();                                               // каждую 1 минуту
 
         return Bucket.builder()
                 .addLimit(limit)
