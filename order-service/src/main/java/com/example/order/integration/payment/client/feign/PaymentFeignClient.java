@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(name = "payment-service", url = "${payment.service.url}")
+@FeignClient(name = "payment-service", url = "${integration.payment-service.base-url}")
 public interface PaymentFeignClient {
 
-    @PostMapping("/payments")
+    @PostMapping
     PaymentResponse createPayment(@RequestBody PaymentRequest request,
                                   @RequestHeader(value = "X-Idempotency-Key", required = false)
                                   String idempotencyKey);

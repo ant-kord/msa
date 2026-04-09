@@ -1,6 +1,6 @@
 package com.example.order.service;
 
-import com.example.order.integration.payment.client.feign.PaymentClient;
+import com.example.order.integration.payment.client.PaymentClient;
 import com.example.order.domain.Order;
 import com.example.order.domain.OrderItem;
 import com.example.order.dto.OrderStatus;
@@ -55,7 +55,7 @@ public class OrderService {
         String idempotencyKey = UUID.randomUUID().toString();
 
         try {
-            PaymentResponse paymentResp = paymentClient.createPayment(paymentReq, idempotencyKey);
+            PaymentResponse paymentResp = paymentClient.createPayment(paymentReq, request.getOrderId());
             log.info("Payment created: {}", paymentResp);
             // при необходимости — обновить статус заказа в зависимости от ответа платежа
             saved.setStatus(OrderStatus.PAID); // пример, если хотите

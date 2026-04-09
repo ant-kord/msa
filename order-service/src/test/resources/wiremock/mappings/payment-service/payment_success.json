@@ -1,0 +1,16 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/api/v1/payments",
+    "headers": {
+      "X-Idempotency-Key": { "equalTo": "200" }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "bodyFileName": "payment-service/payment_response.json"
+  }
+}

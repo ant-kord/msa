@@ -1,0 +1,12 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/api/v1/payments",
+    "headers": {
+      "X-Idempotency-Key": { "equalTo": "404" }
+    }
+  },
+  "response": {
+    "status": 404
+  }
+}

@@ -1,5 +1,6 @@
-package com.example.order.integration.payment.client.feign;
+package com.example.order.integration.payment.client;
 
+import com.example.order.integration.payment.client.feign.PaymentFeignClient;
 import com.example.order.integration.payment.dto.PaymentRequest;
 import com.example.order.integration.payment.dto.PaymentResponse;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -16,10 +17,11 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Optional;
+import java.util.UUID;
 
-@Component
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
+@Component
 public class PaymentClient {
 
     private final PaymentFeignClient paymentFeignClient;
@@ -49,7 +51,7 @@ public class PaymentClient {
         if (isAcceptable(httpStatusCode) && byteBuffer.isPresent()) {
             return getResponse(byteBuffer.get());
         } else {
-            throw new RuntimeException("Не удалось создать платеж");
+            throw ex;
         }
     }
 
