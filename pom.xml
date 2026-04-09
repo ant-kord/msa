@@ -37,7 +37,7 @@
         <apache.commons.version>3.20.0</apache.commons.version>
         <resilience4j.version>2.2.0</resilience4j.version>
         <bucket4j.version>8.10.1</bucket4j.version>
-        <wiremock.version>3.10.0</wiremock.version>
+        <wiremock.version>4.1.0</wiremock.version>
         <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -83,7 +83,6 @@
                 <artifactId>bucket4j-core</artifactId>
                 <version>${bucket4j.version}</version>
             </dependency>
-
 
 
             <!-- Testing -->

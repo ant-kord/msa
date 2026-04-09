@@ -1,0 +1,8 @@
+{
+  "id": "payment-success-1",
+  "orderId": "31111111-3111-3111-3111-311111111115",
+  "amount": 10.0,
+  "method": "CREDIT_CARD",
+  "status": "PENDING",
+  "createdAt": "2024-01-01T00:00:00Z"
+}
