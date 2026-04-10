@@ -1,7 +1,7 @@
 package com.example.payment.dto;
 
-import com.example.payment.domain.PaymentMethod;
-import com.example.payment.domain.PaymentStatus;
+import com.example.payment.enums.PaymentMethod;
+import com.example.payment.enums.PaymentStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

@@ -1,8 +1,8 @@
 package com.example.order.integration.payment.client;
 
 import com.example.order.integration.payment.client.feign.PaymentFeignClient;
-import com.example.order.integration.payment.dto.PaymentRequest;
-import com.example.order.integration.payment.dto.PaymentResponse;
+import com.example.order.integration.payment.dto.request.PaymentRequest;
+import com.example.order.integration.payment.dto.response.PaymentResponse;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import feign.FeignException;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor

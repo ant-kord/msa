@@ -1,4 +1,4 @@
-package com.example.payment.domain;
+package com.example.order.integration.payment.dto.enums;
 
 public enum PaymentMethod {
     CREDIT_CARD,

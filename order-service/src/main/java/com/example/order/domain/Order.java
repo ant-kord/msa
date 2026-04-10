@@ -27,7 +27,7 @@ public class Order {
     @Column(name = "customer_id", nullable = false, length = 36)
     private String customerId;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "order_items", joinColumns = @JoinColumn(name = "order_id"))
     private List<OrderItem> items = new ArrayList<>();
 

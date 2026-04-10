@@ -1,12 +1,11 @@
 package com.example.order.integration.payment.client;
 
-import com.example.order.integration.payment.dto.PaymentMethod;
-import com.example.order.integration.payment.dto.PaymentRequest;
-import com.example.order.integration.payment.dto.PaymentResponse;
-import com.example.order.integration.payment.dto.PaymentStatus;
+import com.example.order.integration.payment.dto.enums.PaymentMethod;
+import com.example.order.integration.payment.dto.request.PaymentRequest;
+import com.example.order.integration.payment.dto.response.PaymentResponse;
+import com.example.order.integration.payment.dto.enums.PaymentStatus;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
