@@ -4,6 +4,7 @@ import com.example.payment.domain.Payment;
 import com.example.payment.domain.PaymentDetails;
 import com.example.payment.dto.PaymentDetailsDTO;
 import com.example.payment.dto.PaymentRequest;
+import com.example.payment.integration.order.dto.request.PaymentRequestMessage;
 import com.example.payment.repository.PaymentRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -31,6 +33,20 @@ public class PaymentService {
                 .amount(request.getAmount())
                 .method(request.getMethod())
                 .paymentDetails(mapDetails(request.getPaymentDetails()))
+                .build();
+        log.info("Payment created: {}", p);
+        return repo.save(p);
+    }
+
+    @Transactional
+    public Payment createPayment(PaymentRequestMessage request) {
+        log.info("Create payment request: {}", request);
+        validate(request);
+        Payment p = Payment.builder()
+                .orderId(String.valueOf(request.orderId()))
+                .amount(request.amount())
+                .method(request.method())
+                .paymentDetails(mapDetails(request.paymentDetails()))
                 .build();
         log.info("Payment created: {}", p);
         return repo.save(p);
@@ -73,6 +89,15 @@ public class PaymentService {
         if (request.getOrderId() == null || request.getOrderId().isBlank())
             throw new IllegalArgumentException("orderId is required");
         if (request.getAmount() == null || request.getAmount() <= 0)
+            throw new IllegalArgumentException("amount must be greater than 0");
+        //if (request.getMethod() == null) throw new IllegalArgumentException("method is required");
+    }
+
+    private void validate(PaymentRequestMessage request) {
+        if (request == null) throw new IllegalArgumentException("PaymentRequest cannot be null");
+        if (request.orderId() == null || request.orderId().toString().isBlank())
+            throw new IllegalArgumentException("orderId is required");
+        if (request.amount() == null || request.amount() <= 0)
             throw new IllegalArgumentException("amount must be greater than 0");
         //if (request.getMethod() == null) throw new IllegalArgumentException("method is required");
     }

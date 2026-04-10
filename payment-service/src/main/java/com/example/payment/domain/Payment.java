@@ -1,5 +1,7 @@
 package com.example.payment.domain;
 
+import com.example.payment.enums.PaymentMethod;
+import com.example.payment.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

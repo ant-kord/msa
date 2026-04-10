@@ -1,5 +1,8 @@
-package com.example.order.integration.payment.dto;
+package com.example.order.integration.payment.dto.response;
 
+import com.example.order.integration.payment.dto.PaymentDetailsDTO;
+import com.example.order.integration.payment.dto.enums.PaymentMethod;
+import com.example.order.integration.payment.dto.enums.PaymentStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

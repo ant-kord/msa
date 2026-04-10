@@ -2,7 +2,7 @@ package com.example.payment;
 
 import com.example.payment.dto.PaymentDetailsDTO;
 import com.example.payment.dto.PaymentRequest;
-import com.example.payment.domain.PaymentMethod;
+import com.example.payment.enums.PaymentMethod;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
