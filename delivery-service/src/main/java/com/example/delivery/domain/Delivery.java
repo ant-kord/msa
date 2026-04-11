@@ -1,5 +1,6 @@
 package com.example.delivery.domain;
 
+import com.example.delivery.enums.DeliveryStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

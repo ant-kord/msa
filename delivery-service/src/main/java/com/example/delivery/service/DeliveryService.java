@@ -2,7 +2,7 @@ package com.example.delivery.service;
 
 import com.example.delivery.domain.Address;
 import com.example.delivery.domain.Delivery;
-import com.example.delivery.domain.DeliveryStatus;
+import com.example.delivery.enums.DeliveryStatus;
 import com.example.delivery.dto.AddressDTO;
 import com.example.delivery.dto.DeliveryRequest;
 import com.example.delivery.repository.DeliveryRepository;

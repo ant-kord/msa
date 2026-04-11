@@ -1,6 +1,6 @@
 package com.example.delivery.dto;
 
-import com.example.delivery.domain.DeliveryStatus;
+import com.example.delivery.enums.DeliveryStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package com.example.delivery.domain;
+package com.example.delivery.enums;
 
 public enum DeliveryStatus {
     PENDING,
