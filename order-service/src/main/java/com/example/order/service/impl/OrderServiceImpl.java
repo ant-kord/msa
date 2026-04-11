@@ -3,8 +3,11 @@ package com.example.order.service.impl;
 import com.example.order.dto.OrderItemRequest;
 import com.example.order.dto.OrderRequest;
 import com.example.order.dto.OrderStatus;
+import com.example.order.entity.AsyncMessage;
 import com.example.order.entity.Order;
 import com.example.order.entity.OrderItem;
+import com.example.order.enums.AsyncMessageStatus;
+import com.example.order.enums.AsyncMessageType;
 import com.example.order.integration.order.dto.request.OrderPaidRequestMessage;
 import com.example.order.integration.payment.client.PaymentClient;
 import com.example.order.integration.payment.config.properties.RabbitMqPaymentServiceProperties;
@@ -15,6 +18,7 @@ import com.example.order.integration.payment.dto.request.PaymentRequestMessage;
 import com.example.order.integration.payment.dto.response.PaymentResponse;
 import com.example.order.integration.payment.dto.response.PaymentResponseMessage;
 import com.example.order.repository.OrderRepository;
+import com.example.order.service.AsyncMessageService;
 import com.example.order.service.OrderService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -25,21 +29,25 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
+@Service
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final PaymentClient paymentClient;
     private final RabbitTemplate rabbitTemplate;
     private final RabbitMqPaymentServiceProperties props;
+    private final JsonMapper mapper;
+    private final AsyncMessageService asyncMessageService;
+
     private final KafkaTemplate<String, OrderPaidRequestMessage> kafkaTemplate;
 
     @Value("${kafka.service.delivery.order-paid-topic}")
@@ -85,8 +93,9 @@ public class OrderServiceImpl implements OrderService {
         return orderSaved;
     }
 
-    @Transactional
+
     @Override
+    @Transactional
     public void changePaymentStatus(PaymentResponseMessage response) {
 
         log.info("Changing status for orderId={} to={}", response.orderId(), response.status());
@@ -97,7 +106,8 @@ public class OrderServiceImpl implements OrderService {
         log.info("Updated order status for id={}", response.orderId());
 
         if (newStatus == OrderStatus.PAID) {
-            sendOrderPaidMessage(order);
+            //sendOrderPaidMessage(order);
+            createAndSaveOrderPaidMessage(order);
         }
     }
 
@@ -170,6 +180,21 @@ public class OrderServiceImpl implements OrderService {
     private void sendOrderPaidMessage(Order order) {
         var bookedMessage = new OrderPaidRequestMessage(UUID.fromString(order.getId()));
         kafkaTemplate.send(orderPaidTopic, order.getId(), bookedMessage);
+    }
+
+    private void createAndSaveOrderPaidMessage(Order order) {
+        var bookedMessage = new OrderPaidRequestMessage(UUID.fromString(order.getId()));
+
+        AsyncMessage asyncMessage = AsyncMessage.builder()
+                .id(UUID.randomUUID().toString())
+                .topic(orderPaidTopic)
+                .value(mapper.writeValueAsString(bookedMessage))
+                .type(AsyncMessageType.OUTBOX)
+                .status(AsyncMessageStatus.CREATED)
+                .build();
+        log.info("Sent async message for orderId={}", order.getId());
+
+        asyncMessageService.saveMessage(asyncMessage);
     }
 
     private void validateRequest(OrderRequest request) {
