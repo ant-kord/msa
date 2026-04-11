@@ -1,4 +1,4 @@
-package com.example.delivery.domain;
+package com.example.delivery.entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.*;

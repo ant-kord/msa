@@ -1,7 +1,6 @@
-package com.example.payment.domain;
+package com.example.delivery.entity;
 
-import com.example.payment.enums.PaymentMethod;
-import com.example.payment.enums.PaymentStatus;
+import com.example.delivery.enums.DeliveryStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,14 +8,13 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "payments")
+@Table(name = "deliveries")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Payment {
+public class Delivery {
 
     @Id
     @Column(length = 36)
@@ -25,25 +23,22 @@ public class Payment {
     @Column(name = "order_id", nullable = false, length = 36)
     private String orderId;
 
-    @Column(nullable = false)
-    private Double amount;
-
-    @Enumerated(EnumType.STRING)
-    private PaymentMethod method;
-
     @Embedded
-    private PaymentDetails paymentDetails;
+    private Address address;
 
     @Enumerated(EnumType.STRING)
-    private PaymentStatus status;
+    private DeliveryStatus status;
 
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
+
+    @Column(name = "delivered_at")
+    private OffsetDateTime deliveredAt;
 
     @PrePersist
     public void prePersist() {
         if (this.id == null) this.id = UUID.randomUUID().toString();
         if (this.createdAt == null) this.createdAt = OffsetDateTime.now();
-        if (this.status == null) this.status = PaymentStatus.PENDING;
+        if (this.status == null) this.status = DeliveryStatus.PENDING;
     }
 }

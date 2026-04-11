@@ -1,6 +1,6 @@
 package com.example.delivery.integration.order.listaner;
 
-import com.example.delivery.domain.Delivery;
+import com.example.delivery.entity.Delivery;
 import com.example.delivery.integration.order.dto.request.OrderPaidRequestMessage;
 import com.example.delivery.service.DeliveryService;
 import lombok.RequiredArgsConstructor;

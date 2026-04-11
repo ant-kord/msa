@@ -1,4 +1,4 @@
-package com.example.order.domain;
+package com.example.order.entity;
 
 import com.example.order.dto.OrderStatus;
 import jakarta.persistence.*;
@@ -8,7 +8,6 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "orders")

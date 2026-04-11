@@ -1,7 +1,7 @@
 package com.example.order.controller;
 
 import com.example.order.controller.doc.OrderControllerDoc;
-import com.example.order.domain.Order;
+import com.example.order.entity.Order;
 import com.example.order.dto.OrderStatus;
 import com.example.order.dto.OrderRequest;
 import com.example.order.dto.OrderResponse;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController

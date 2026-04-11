@@ -1,7 +1,7 @@
 package com.example.payment.integration.order.listener;
 
-import com.example.payment.domain.Payment;
-import com.example.payment.domain.PaymentDetails;
+import com.example.payment.entity.Payment;
+import com.example.payment.entity.PaymentDetails;
 import com.example.payment.dto.PaymentDetailsDTO;
 import com.example.payment.integration.order.config.properties.RabbitMqOrderServiceProperties;
 import com.example.payment.integration.order.dto.request.PaymentRequestMessage;

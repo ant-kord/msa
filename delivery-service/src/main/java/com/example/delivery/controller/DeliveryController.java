@@ -1,7 +1,7 @@
 package com.example.delivery.controller;
 
 import com.example.delivery.controller.doc.DeliveryControllerDoc;
-import com.example.delivery.domain.Delivery;
+import com.example.delivery.entity.Delivery;
 import com.example.delivery.dto.AddressDTO;
 import com.example.delivery.dto.DeliveryRequest;
 import com.example.delivery.dto.DeliveryResponse;

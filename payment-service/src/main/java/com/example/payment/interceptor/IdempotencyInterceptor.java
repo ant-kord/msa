@@ -1,6 +1,6 @@
 package com.example.payment.interceptor;
 
-import com.example.payment.domain.IdempotencyKey;
+import com.example.payment.entity.IdempotencyKey;
 import com.example.payment.enums.IdempotencyKeyStatus;
 import com.example.payment.exception.IdempotencyKeyExistsException;
 import com.example.payment.service.IdempotencyService;

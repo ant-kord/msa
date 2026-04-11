@@ -1,4 +1,4 @@
-package com.example.order.domain;
+package com.example.order.entity;
 
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.Min;

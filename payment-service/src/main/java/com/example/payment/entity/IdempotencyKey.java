@@ -1,4 +1,4 @@
-package com.example.payment.domain;
+package com.example.payment.entity;
 
 import com.example.payment.enums.IdempotencyKeyStatus;
 import jakarta.persistence.*;

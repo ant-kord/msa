@@ -1,4 +1,4 @@
-package com.example.payment.domain;
+package com.example.payment.entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.*;

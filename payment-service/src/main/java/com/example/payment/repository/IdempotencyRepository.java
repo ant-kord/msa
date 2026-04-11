@@ -1,6 +1,6 @@
 package com.example.payment.repository;
 
-import com.example.payment.domain.IdempotencyKey;
+import com.example.payment.entity.IdempotencyKey;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
