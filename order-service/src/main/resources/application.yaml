@@ -22,6 +22,26 @@ spring:
     password: admin
     addresses: amqp://localhost:5672
 
+  kafka:
+    bootstrap-servers: localhost:9093
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    listener:
+      ack-mode: manual
+      observation-enabled: true
+    template:
+      observation-enabled: true
+    consumer:
+      group-id: delivery-consumers
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      properties:
+        spring.json.use.type.headers: false
+        spring.json.trusted.packages: "*"
+
 logging:
   level:
     web: DEBUG
@@ -85,4 +105,10 @@ rabbitmq:
       exchange-request-name: payment-request-exchange
       queue-request-name: payment-request-queue
       queue-response-name: payment-response-queue
+
+kafka:
+  service:
+    delivery:
+      order-paid-topic: order.paid
+      delivery-created-topic: delivery.created
 

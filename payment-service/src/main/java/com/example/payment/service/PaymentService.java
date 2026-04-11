@@ -4,6 +4,7 @@ import com.example.payment.domain.Payment;
 import com.example.payment.domain.PaymentDetails;
 import com.example.payment.dto.PaymentDetailsDTO;
 import com.example.payment.dto.PaymentRequest;
+import com.example.payment.enums.PaymentStatus;
 import com.example.payment.integration.order.dto.request.PaymentRequestMessage;
 import com.example.payment.repository.PaymentRepository;
 import jakarta.transaction.Transactional;
@@ -47,6 +48,7 @@ public class PaymentService {
                 .amount(request.amount())
                 .method(request.method())
                 .paymentDetails(mapDetails(request.paymentDetails()))
+                .status(PaymentStatus.COMPLETED)
                 .build();
         log.info("Payment created: {}", p);
         return repo.save(p);

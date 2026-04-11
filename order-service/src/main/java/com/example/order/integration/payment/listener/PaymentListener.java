@@ -21,9 +21,9 @@ public class PaymentListener {
      * Обработчик сообщений из очереди RabbitMQ.
      * Обновляет статус записи на прием на основе полученного сообщения.
      *
-     * @param response сообщение о резервировании времени
+     * @param response сообщение о об оплате
      */
-    @RabbitListener(queues = "payment-request-queue")
+    @RabbitListener(queues = "${rabbitmq.service.payment.queue-response-name}")
     public void handle(PaymentResponseMessage response) {
         log.info("Payment response: orderId={}, status={}", response.orderId(), response.status());
         orderService.changePaymentStatus(response);

@@ -1,5 +1,6 @@
 package com.example.order.service;
 
+import com.example.order.integration.order.dto.request.OrderPaidRequestMessage;
 import com.example.order.integration.payment.client.PaymentClient;
 import com.example.order.domain.Order;
 import com.example.order.domain.OrderItem;
@@ -8,6 +9,7 @@ import com.example.order.dto.OrderItemRequest;
 import com.example.order.dto.OrderRequest;
 import com.example.order.integration.payment.config.properties.RabbitMqPaymentServiceProperties;
 import com.example.order.integration.payment.dto.enums.PaymentMethod;
+import com.example.order.integration.payment.dto.enums.PaymentStatus;
 import com.example.order.integration.payment.dto.request.PaymentRequest;
 import com.example.order.integration.payment.dto.request.PaymentRequestMessage;
 import com.example.order.integration.payment.dto.response.PaymentResponse;
@@ -18,6 +20,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -35,6 +39,10 @@ public class OrderService {
     private final PaymentClient paymentClient;
     private final RabbitTemplate rabbitTemplate;
     private final RabbitMqPaymentServiceProperties props;
+    private final KafkaTemplate<String, OrderPaidRequestMessage> kafkaTemplate;
+
+    @Value("${kafka.service.delivery.order-paid-topic}")
+    private String orderPaidTopic;
 
     @Transactional
     public Order createOrder(OrderRequest request) {
@@ -78,9 +86,15 @@ public class OrderService {
     public void changePaymentStatus(PaymentResponseMessage response) {
 
         log.info("Changing status for orderId={} to={}", response.orderId(), response.status());
-        Optional<Order> order = orderRepository.findById(response.orderId().toString());
-        order.ifPresent(value -> value.setStatus(OrderStatus.PAID));
+        OrderStatus newStatus = response.status().equals(PaymentStatus.COMPLETED) ? OrderStatus.PAID : OrderStatus.CANCELLED;
+        Order order = orderRepository.findById(response.orderId().toString()).orElseThrow(EntityNotFoundException::new);
+        order.setStatus(OrderStatus.PAID);
+        orderRepository.save(order);
         log.info("Updated order status for id={}", response.orderId());
+
+        if (newStatus == OrderStatus.PAID) {
+            sendOrderPaidMessage(order);
+        }
     }
 
     public Optional<Order> getOrder(String id) {
@@ -143,6 +157,11 @@ public class OrderService {
                 requestMessage
         );
         log.info("Sent payment request for orderId={}", order.getId());
+    }
+
+    private void sendOrderPaidMessage(Order order) {
+        var bookedMessage = new OrderPaidRequestMessage(UUID.fromString(order.getId()));
+        kafkaTemplate.send(orderPaidTopic, order.getId(), bookedMessage);
     }
 
     private void validateRequest(OrderRequest request) {

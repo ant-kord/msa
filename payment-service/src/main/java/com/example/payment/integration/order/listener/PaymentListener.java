@@ -45,6 +45,7 @@ public class PaymentListener {
                 .amount(payment.getAmount())
                 .paymentDetails(mapDetails(payment.getPaymentDetails()))
                 .method(payment.getMethod())
+                .status(payment.getStatus())
                 .build();
 
         rabbitTemplate.convertAndSend(
@@ -52,7 +53,7 @@ public class PaymentListener {
                 properties.queueResponseName(),
                 response
         );
-        log.info("Sent reservation response={}", response);
+        log.info("Sent payment response={}", response);
     }
 
     private PaymentDetailsDTO mapDetails(PaymentDetails paymentDetails) {

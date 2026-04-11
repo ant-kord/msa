@@ -5,8 +5,13 @@ import com.example.delivery.domain.Delivery;
 import com.example.delivery.enums.DeliveryStatus;
 import com.example.delivery.dto.AddressDTO;
 import com.example.delivery.dto.DeliveryRequest;
+import com.example.delivery.integration.order.dto.response.DeliveryCreatedResponseMessage;
 import com.example.delivery.repository.DeliveryRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -14,17 +19,21 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
+
+@RequiredArgsConstructor
+@Slf4j
 @Service
-@Transactional
 public class DeliveryService {
 
-    private final DeliveryRepository repo;
+    private final DeliveryRepository repository;
+    private final KafkaTemplate<String, DeliveryCreatedResponseMessage> kafkaTemplate;
 
-    public DeliveryService(DeliveryRepository repo) {
-        this.repo = repo;
-    }
+    @Value("${kafka.service.order.delivery-created-topic}")
+    private String deliveryCreatedTopic;
 
+    @Transactional
     public Delivery createDelivery(DeliveryRequest req) {
         validate(req);
 
@@ -34,22 +43,41 @@ public class DeliveryService {
                 .status(req.getStatus() == null ? DeliveryStatus.PENDING : req.getStatus())
                 .build();
 
-        return repo.save(d);
+        return repository.save(d);
     }
+
+    @Transactional
+    public Delivery createDelivery(UUID orderId) {
+        log.info("Starting creation of delivery for order ID: {}", orderId);
+        var delivery = Delivery.builder()
+                .orderId(orderId.toString())
+                .status(DeliveryStatus.CREATED)
+                .build();
+        repository.save(delivery);
+        log.info("Delivery created with ID: {}", delivery.getId());
+
+        var responseMessage = new DeliveryCreatedResponseMessage(orderId, UUID.fromString(delivery.getId()));
+        kafkaTemplate.send(deliveryCreatedTopic, delivery.getId(), responseMessage);
+        log.info("Sent delivery creation message to Kafka for ID: {}", delivery.getId());
+
+        return delivery;
+    }
+
+
 
     public Optional<Delivery> getDelivery(String id) {
         if (id == null || id.isBlank()) return Optional.empty();
-        return repo.findById(id);
+        return repository.findById(id);
     }
 
     public List<Delivery> listDeliveries() {
-        return repo.findAll();
+        return repository.findAll();
     }
 
     public Optional<Delivery> updateDelivery(String id, DeliveryRequest req) {
         if (id == null || id.isBlank()) return Optional.empty();
 
-        return repo.findById(id).map(existing -> {
+        return repository.findById(id).map(existing -> {
             if (req.getOrderId() != null && !req.getOrderId().isBlank())
                 existing.setOrderId(req.getOrderId());
             if (req.getAddress() != null) existing.setAddress(mapAddress(req.getAddress()));
@@ -66,14 +94,14 @@ public class DeliveryService {
                     throw new IllegalArgumentException("deliveredAt must be in ISO_OFFSET_DATE_TIME format");
                 }
             }
-            return repo.save(existing);
+            return repository.save(existing);
         });
     }
 
     public boolean deleteDelivery(String id) {
         if (id == null || id.isBlank()) return false;
-        return repo.findById(id).map(d -> {
-            repo.delete(d);
+        return repository.findById(id).map(d -> {
+            repository.delete(d);
             return true;
         }).orElse(false);
     }
