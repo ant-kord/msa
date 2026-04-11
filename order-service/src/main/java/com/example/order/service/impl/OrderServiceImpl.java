@@ -8,7 +8,7 @@ import com.example.order.entity.Order;
 import com.example.order.entity.OrderItem;
 import com.example.order.enums.AsyncMessageStatus;
 import com.example.order.enums.AsyncMessageType;
-import com.example.order.integration.order.dto.request.OrderPaidRequestMessage;
+import com.example.order.integration.delivery.dto.request.OrderPaidRequestMessage;
 import com.example.order.integration.payment.client.PaymentClient;
 import com.example.order.integration.payment.config.properties.RabbitMqPaymentServiceProperties;
 import com.example.order.integration.payment.dto.enums.PaymentMethod;

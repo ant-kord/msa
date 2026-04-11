@@ -2,7 +2,7 @@ package com.example.order.schedule.processor;
 
 import com.example.order.entity.AsyncMessage;
 import com.example.order.exception.SendingAsyncMessageException;
-import com.example.order.integration.order.dto.request.OrderPaidRequestMessage;
+import com.example.order.integration.delivery.dto.request.OrderPaidRequestMessage;
 import com.example.order.service.AsyncMessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
