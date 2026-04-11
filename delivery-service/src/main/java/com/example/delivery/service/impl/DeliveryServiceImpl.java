@@ -3,7 +3,7 @@ package com.example.delivery.service.impl;
 import com.example.delivery.entity.Address;
 import com.example.delivery.entity.Delivery;
 import com.example.delivery.dto.AddressDTO;
-import com.example.delivery.dto.DeliveryRequest;
+import com.example.delivery.dto.request.DeliveryRequest;
 import com.example.delivery.enums.DeliveryStatus;
 import com.example.delivery.integration.order.dto.response.DeliveryCreatedResponseMessage;
 import com.example.delivery.repository.DeliveryRepository;

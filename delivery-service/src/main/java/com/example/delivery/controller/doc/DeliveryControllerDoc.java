@@ -1,7 +1,7 @@
 package com.example.delivery.controller.doc;
 
-import com.example.delivery.dto.DeliveryRequest;
-import com.example.delivery.dto.DeliveryResponse;
+import com.example.delivery.dto.request.DeliveryRequest;
+import com.example.delivery.dto.response.DeliveryResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

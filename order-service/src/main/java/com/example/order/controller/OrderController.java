@@ -1,10 +1,11 @@
 package com.example.order.controller;
 
 import com.example.order.controller.doc.OrderControllerDoc;
+import com.example.order.dto.request.OrderItemRequest;
 import com.example.order.entity.Order;
-import com.example.order.dto.OrderStatus;
-import com.example.order.dto.OrderRequest;
-import com.example.order.dto.OrderResponse;
+import com.example.order.enums.OrderStatus;
+import com.example.order.dto.request.OrderRequest;
+import com.example.order.dto.response.OrderResponse;
 import com.example.order.service.OrderService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
@@ -89,7 +90,7 @@ public class OrderController implements OrderControllerDoc {
         return OrderResponse.builder()
                 .id(o.getId())
                 .customerId(o.getCustomerId())
-                .items(o.getItems().stream().map(it -> com.example.order.dto.OrderItemRequest.builder()
+                .items(o.getItems().stream().map(it -> OrderItemRequest.builder()
                         .productId(it.getProductId())
                         .quantity(it.getQuantity())
                         .price(it.getPrice())

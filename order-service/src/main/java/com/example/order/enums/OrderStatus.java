@@ -1,4 +1,4 @@
-package com.example.order.dto;
+package com.example.order.enums;
 
 public enum OrderStatus {
     PENDING,

@@ -1,7 +1,7 @@
 package com.example.delivery.service;
 
 import com.example.delivery.entity.Delivery;
-import com.example.delivery.dto.DeliveryRequest;
+import com.example.delivery.dto.request.DeliveryRequest;
 
 import java.util.List;
 import java.util.Optional;

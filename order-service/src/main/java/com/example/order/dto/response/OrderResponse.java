@@ -1,5 +1,7 @@
-package com.example.order.dto;
+package com.example.order.dto.response;
 
+import com.example.order.enums.OrderStatus;
+import com.example.order.dto.request.OrderItemRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

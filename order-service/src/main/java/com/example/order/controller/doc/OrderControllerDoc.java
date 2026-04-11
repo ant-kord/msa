@@ -1,8 +1,8 @@
 package com.example.order.controller.doc;
 
-import com.example.order.dto.OrderStatus;
-import com.example.order.dto.OrderRequest;
-import com.example.order.dto.OrderResponse;
+import com.example.order.enums.OrderStatus;
+import com.example.order.dto.request.OrderRequest;
+import com.example.order.dto.response.OrderResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

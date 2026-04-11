@@ -1,7 +1,7 @@
 package com.example.payment.controller.doc;
 
-import com.example.payment.dto.PaymentRequest;
-import com.example.payment.dto.PaymentResponse;
+import com.example.payment.dto.request.PaymentRequest;
+import com.example.payment.dto.response.PaymentResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

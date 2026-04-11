@@ -1,8 +1,8 @@
 package com.example.order.service.impl;
 
-import com.example.order.dto.OrderItemRequest;
-import com.example.order.dto.OrderRequest;
-import com.example.order.dto.OrderStatus;
+import com.example.order.dto.request.OrderItemRequest;
+import com.example.order.dto.request.OrderRequest;
+import com.example.order.enums.OrderStatus;
 import com.example.order.entity.AsyncMessage;
 import com.example.order.entity.Order;
 import com.example.order.entity.OrderItem;

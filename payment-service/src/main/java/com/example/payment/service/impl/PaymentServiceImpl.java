@@ -3,7 +3,7 @@ package com.example.payment.service.impl;
 import com.example.payment.entity.Payment;
 import com.example.payment.entity.PaymentDetails;
 import com.example.payment.dto.PaymentDetailsDTO;
-import com.example.payment.dto.PaymentRequest;
+import com.example.payment.dto.request.PaymentRequest;
 import com.example.payment.enums.PaymentStatus;
 import com.example.payment.integration.order.dto.request.PaymentRequestMessage;
 import com.example.payment.repository.PaymentRepository;

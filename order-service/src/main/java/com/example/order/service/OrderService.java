@@ -1,8 +1,8 @@
 package com.example.order.service;
 
 import com.example.order.entity.Order;
-import com.example.order.dto.OrderStatus;
-import com.example.order.dto.OrderRequest;
+import com.example.order.enums.OrderStatus;
+import com.example.order.dto.request.OrderRequest;
 import com.example.order.integration.payment.dto.response.PaymentResponseMessage;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.example.order.entity;
 
-import com.example.order.dto.OrderStatus;
+import com.example.order.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

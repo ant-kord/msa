@@ -1,7 +1,7 @@
 package com.example.payment.service;
 
 import com.example.payment.entity.Payment;
-import com.example.payment.dto.PaymentRequest;
+import com.example.payment.dto.request.PaymentRequest;
 import com.example.payment.integration.order.dto.request.PaymentRequestMessage;
 
 import java.util.List;

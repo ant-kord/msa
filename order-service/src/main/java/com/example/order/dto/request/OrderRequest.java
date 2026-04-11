@@ -1,4 +1,4 @@
-package com.example.order.dto;
+package com.example.order.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
