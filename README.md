@@ -1,4 +1,4 @@
-# Microservices Multi-Module Project
+# Microservices Project
 
 This project implements three Spring Boot microservices in a single Maven multi-module repository:
 - order-service (port 8081)
