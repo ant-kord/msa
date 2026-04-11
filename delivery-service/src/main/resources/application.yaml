@@ -8,6 +8,7 @@ spring:
     username: sa
     password:
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     open-in-view: false
     hibernate:
       ddl-auto: update
@@ -16,6 +17,28 @@ spring:
     console:
       enabled: true
       path: /h2-console
+
+  kafka:
+    bootstrap-servers: localhost:9093 # Адрес и порт Kafka-брокеров, к которым будет подключаться приложение
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer # Сериализация ключа сообщений в строку
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer # Сериализация значения сообщений в JSON
+    listener:
+      ack-mode: manual # Режим подтверждения обработки сообщений — вручную
+      observation-enabled: true # Включение наблюдения для слушателей Kafka
+    template:
+      observation-enabled: true # Включение наблюдения для KafkaTemplate
+    consumer:
+      group-id: delivery-consumers # Идентификатор группы потребителей
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer # Десериализация ключа из строки
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer # Десериализация значения из JSON
+      auto-offset-reset: earliest # Начинать чтение с самого раннего сообщения при отсутствии смещения
+      enable-auto-commit: false # Отключение автоматического подтверждения смещений для ручного контроля
+      properties:
+        spring.json.use.type.headers: false # Отключение использования заголовков типа JSON
+        spring.json.trusted.packages: "*" # Разрешение доверять любым пакетам при десериализации
+        spring.json.value.default.type: "com.example.delivery.integration.order.dto.request.OrderPaidRequestMessage" # Тип по умолчанию для десериализации JSON
+
 
 logging:
   level:
@@ -32,3 +55,10 @@ resilience4j:
         minimumNumberOfCalls: 8
         ignoreExceptions:
           - java.lang.RuntimeException    # Исключения, которые игнорируются при оценке ошибок
+
+
+kafka:
+  service:
+    order:
+      order-paid-topic: order.paid
+      delivery-created-topic: delivery.created
