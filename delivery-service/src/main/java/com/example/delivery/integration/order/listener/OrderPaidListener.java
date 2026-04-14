@@ -1,4 +1,4 @@
-package com.example.delivery.integration.order.listaner;
+package com.example.delivery.integration.order.listener;
 
 import com.example.delivery.entity.Delivery;
 import com.example.delivery.integration.order.dto.request.OrderPaidRequestMessage;

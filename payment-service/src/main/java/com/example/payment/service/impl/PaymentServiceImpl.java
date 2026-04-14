@@ -9,7 +9,7 @@ import com.example.payment.integration.order.dto.request.PaymentRequestMessage;
 import com.example.payment.repository.PaymentRepository;
 import com.example.payment.service.PaymentService;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Optional;
 
 
-@Slf4j
-@AllArgsConstructor
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository repo;

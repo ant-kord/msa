@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 @RequiredArgsConstructor
 @Slf4j
-@Service
 public class DeliveryServiceImpl implements DeliveryService {
 
     private final DeliveryRepository repository;
