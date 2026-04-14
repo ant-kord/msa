@@ -41,6 +41,7 @@ spring:
       properties:
         spring.json.use.type.headers: false
         spring.json.trusted.packages: "*"
+        spring.json.value.default.type: "com.example.order.integration.delivery.dto.response.DeliveryCreatedResponseMessage"
 
 logging:
   level:
