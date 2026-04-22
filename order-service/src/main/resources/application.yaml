@@ -33,7 +33,7 @@ spring:
     template:
       observation-enabled: true
     consumer:
-      group-id: delivery-consumers
+      group-id: order-consumers
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       auto-offset-reset: earliest
@@ -41,7 +41,7 @@ spring:
       properties:
         spring.json.use.type.headers: false
         spring.json.trusted.packages: "*"
-        spring.json.value.default.type: "com.example.order.integration.delivery.dto.response.DeliveryCreatedResponseMessage"
+        spring.json.value.default.type: "com.example.order.dto.message.OrderCreationStatusMessage"
 
 logging:
   level:
@@ -100,16 +100,14 @@ integration:
   payment-service:
     base-url: http://localhost:8082/api/v1/payments
 
-rabbitmq:
-  service:
-    payment:
-      exchange-request-name: payment-request-exchange
-      queue-request-name: payment-request-queue
-      queue-response-name: payment-response-queue
+#rabbitmq:
+#  service:
+#    payment:
+#      exchange-request-name: payment-request-exchange
+#      queue-request-name: payment-request-queue
+#      queue-response-name: payment-response-queue
 
 kafka:
   service:
-    delivery:
-      order-paid-topic: order.paid
-      delivery-created-topic: delivery.created
-
+    order:
+      order-creation-status-topic: order.creation.status

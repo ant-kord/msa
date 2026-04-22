@@ -1,5 +1,6 @@
 package com.example.order.schedule.processor;
 
+import com.example.order.dto.message.OrderCreationStatusMessage;
 import com.example.order.entity.AsyncMessage;
 import com.example.order.exception.SendingAsyncMessageException;
 import com.example.order.integration.delivery.dto.request.OrderPaidRequestMessage;
@@ -20,7 +21,7 @@ import tools.jackson.databind.json.JsonMapper;
 public class AsyncMessageSenderProcessor {
 
     private final AsyncMessageService asyncMessageService;
-    private final KafkaTemplate<String, OrderPaidRequestMessage> kafkaTemplate;
+    private final KafkaTemplate<String, OrderCreationStatusMessage> kafkaTemplate;
     private final JsonMapper mapper;
 
     /**
@@ -32,7 +33,7 @@ public class AsyncMessageSenderProcessor {
     @Transactional
     public void sendMessage(AsyncMessage message) {
         try {
-            var reqMessage = mapper.readValue(message.getValue(), OrderPaidRequestMessage.class);
+            var reqMessage = mapper.readValue(message.getValue(), OrderCreationStatusMessage.class);
 
             kafkaTemplate.send(message.getTopic(), message.getId().getId(), reqMessage)
                 .exceptionally(e -> {

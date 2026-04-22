@@ -7,15 +7,20 @@ import com.example.order.integration.payment.dto.response.PaymentResponseMessage
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 public interface OrderService {
 
     Order createOrder(OrderRequest request);
 
-    Order createOrderOld(OrderRequest request);
+    //Order createOrderOld(OrderRequest request);
 
     void changePaymentStatus(PaymentResponseMessage response);
+
+    void changeOrderStatus(UUID orderId, OrderStatus status);
+
+    void cancelOrder(UUID orderId);
 
     Optional<Order> getOrder(String id);
 

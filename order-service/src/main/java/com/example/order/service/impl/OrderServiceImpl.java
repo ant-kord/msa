@@ -1,5 +1,7 @@
 package com.example.order.service.impl;
 
+import com.example.order.dto.message.OrderCreationStatus;
+import com.example.order.dto.message.OrderCreationStatusMessage;
 import com.example.order.dto.request.OrderItemRequest;
 import com.example.order.dto.request.OrderRequest;
 import com.example.order.enums.OrderStatus;
@@ -10,7 +12,7 @@ import com.example.order.enums.AsyncMessageStatus;
 import com.example.order.enums.AsyncMessageType;
 import com.example.order.integration.delivery.dto.request.OrderPaidRequestMessage;
 import com.example.order.integration.payment.client.PaymentClient;
-import com.example.order.integration.payment.config.properties.RabbitMqPaymentServiceProperties;
+//import com.example.order.integration.payment.config.properties.RabbitMqPaymentServiceProperties;
 import com.example.order.integration.payment.dto.enums.PaymentMethod;
 import com.example.order.integration.payment.dto.enums.PaymentStatus;
 import com.example.order.integration.payment.dto.request.PaymentRequest;
@@ -42,26 +44,28 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final PaymentClient paymentClient;
+    //private final PaymentClient paymentClient;
     private final RabbitTemplate rabbitTemplate;
-    private final RabbitMqPaymentServiceProperties props;
+    //private final RabbitMqPaymentServiceProperties props;
     private final JsonMapper mapper;
     private final AsyncMessageService asyncMessageService;
 
     private final KafkaTemplate<String, OrderPaidRequestMessage> kafkaTemplate;
 
-    @Value("${kafka.service.delivery.order-paid-topic}")
-    private String orderPaidTopic;
+    @Value("${kafka.service.order.order-creation-status-topic}")
+    private String orderCreationStatusTopic;
 
     @Transactional
     @Override
     public Order createOrder(OrderRequest request) {
         Order orderSaved = createAndSaveOrder(request);
-        sendPaymentMessage(orderSaved);
+        log.info("Order created: {}", orderSaved);
+        createAndSaveOrderCreationStatusMessage(orderSaved, OrderCreationStatus.PENDING);
+        //sendPaymentMessage(orderSaved);
         return orderSaved;
     }
 
-    @Deprecated
+    /*@Deprecated
     @Transactional
     @Override
     public Order createOrderOld(OrderRequest request) {
@@ -91,7 +95,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return orderSaved;
-    }
+    }*/
 
 
     @Override
@@ -107,8 +111,30 @@ public class OrderServiceImpl implements OrderService {
 
         if (newStatus == OrderStatus.PAID) {
             //sendOrderPaidMessage(order);
-            createAndSaveOrderPaidMessage(order);
+            //createAndSaveOrderPaidMessage(order);
         }
+    }
+
+    @Transactional
+    @Override
+    public void changeOrderStatus(UUID orderId, OrderStatus status) {
+        log.info("Changing status for orderId={} to={}", orderId, status);
+        Order order = orderRepository.findById(String.valueOf(orderId))
+                .orElseThrow(EntityNotFoundException::new);
+        order.setStatus(status);
+        orderRepository.save(order);
+        log.info("Updated order status for id={}", orderId);
+    }
+
+    @Transactional
+    @Override
+    public void cancelOrder(UUID orderId) {
+        log.info("Cancelling order by id = ", orderId);
+        Order order = orderRepository.findById(String.valueOf(orderId))
+                .orElseThrow(EntityNotFoundException::new);
+        order.setStatus(OrderStatus.CANCELLED);
+        orderRepository.save(order);
+        log.info("Updated order status for id={}", orderId);
     }
 
     @Override
@@ -147,6 +173,27 @@ public class OrderServiceImpl implements OrderService {
         }).orElse(false);
     }
 
+    private void createAndSaveOrderCreationStatusMessage(Order order, OrderCreationStatus status) {
+        var orderMessage = OrderCreationStatusMessage.builder()
+                .orderId(UUID.fromString(order.getId()))
+                .customerId(UUID.fromString(order.getCustomerId()))
+                .amount(order.getTotalAmount())
+                .status(status)
+                .build();
+
+        log.info("Creating order status: {}", orderMessage);
+
+        AsyncMessage asyncMessage = AsyncMessage.builder()
+                .id(UUID.randomUUID().toString())
+                .topic(orderCreationStatusTopic)
+                .value(mapper.writeValueAsString(orderMessage))
+                .type(AsyncMessageType.OUTBOX)
+                .status(AsyncMessageStatus.CREATED)
+                .build();
+
+        asyncMessageService.saveMessage(asyncMessage);
+    }
+
     private Order createAndSaveOrder(OrderRequest request) {
         validateRequest(request);
         Order order = Order.builder()
@@ -169,17 +216,17 @@ public class OrderServiceImpl implements OrderService {
 
                 .build();
 
-        rabbitTemplate.convertAndSend(
+        /*rabbitTemplate.convertAndSend(
                 props.exchangeRequestName(),
                 props.queueRequestName(),
                 requestMessage
-        );
+        );*/
         log.info("Sent payment request for orderId={}", order.getId());
     }
 
-    private void sendOrderPaidMessage(Order order) {
+    /*private void sendOrderPaidMessage(Order order) {
         var bookedMessage = new OrderPaidRequestMessage(UUID.fromString(order.getId()));
-        kafkaTemplate.send(orderPaidTopic, order.getId(), bookedMessage);
+        kafkaTemplate.send(orderCreationTopic, order.getId(), bookedMessage);
     }
 
     private void createAndSaveOrderPaidMessage(Order order) {
@@ -187,7 +234,7 @@ public class OrderServiceImpl implements OrderService {
 
         AsyncMessage asyncMessage = AsyncMessage.builder()
                 .id(UUID.randomUUID().toString())
-                .topic(orderPaidTopic)
+                .topic(orderCreationTopic)
                 .value(mapper.writeValueAsString(bookedMessage))
                 .type(AsyncMessageType.OUTBOX)
                 .status(AsyncMessageStatus.CREATED)
@@ -196,6 +243,7 @@ public class OrderServiceImpl implements OrderService {
 
         asyncMessageService.saveMessage(asyncMessage);
     }
+    */
 
     private void validateRequest(OrderRequest request) {
         if (request == null) throw new IllegalArgumentException("OrderRequest cannot be null");

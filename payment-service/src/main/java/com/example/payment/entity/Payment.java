@@ -25,6 +25,9 @@ public class Payment {
     @Column(name = "order_id", nullable = false, length = 36)
     private String orderId;
 
+    @Column(name = "customer_id", nullable = false, length = 36)
+    private String customerId;
+
     @Column(nullable = false)
     private Double amount;
 

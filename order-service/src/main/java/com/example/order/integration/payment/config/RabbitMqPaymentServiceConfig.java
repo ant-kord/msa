@@ -1,6 +1,6 @@
 package com.example.order.integration.payment.config;
 
-import com.example.order.integration.payment.config.properties.RabbitMqPaymentServiceProperties;
+//import com.example.order.integration.payment.config.properties.RabbitMqPaymentServiceProperties;
 import com.example.order.integration.payment.dto.request.PaymentRequestMessage;
 import com.example.order.integration.payment.dto.response.PaymentResponseMessage;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +19,7 @@ import java.util.Map;
 /**
  * Конфигурационный класс для настройки RabbitMQ для сервиса оплаты.
  */
+/*
 @Configuration
 @RequiredArgsConstructor
 public class RabbitMqPaymentServiceConfig {
@@ -26,35 +27,41 @@ public class RabbitMqPaymentServiceConfig {
 
     private final RabbitMqPaymentServiceProperties properties;
 
-    /**
+    */
+/**
      * Создает очередь для ответа об оплате заказа.
      *
      * @return очередь
-     */
+     *//*
+
     @Bean
     public Queue paymentRequestQueue() {
         return QueueBuilder.durable(properties.queueRequestName())
                 .build();
     }
 
-    /**
+    */
+/**
      * Создает прямой обменник для ответа об оплате заказа.
      *
      * @return обменник
-     */
+     *//*
+
     @Bean
     public DirectExchange paymentRequestExchange() {
 
         return new DirectExchange(properties.exchangeRequestName());
     }
 
-    /**
+    */
+/**
      * Создает связывание между очередью и обменником.
      *
      * @param paymentRequestQueue    очередь
      * @param paymentRequestExchange обменник
      * @return связывание
-     */
+     *//*
+
     @Bean
     public Binding queueBinding(Queue paymentRequestQueue,
                                 DirectExchange paymentRequestExchange) {
@@ -64,12 +71,14 @@ public class RabbitMqPaymentServiceConfig {
                 .with(properties.queueRequestName());
     }
 
-    /**
+    */
+/**
      * Настраивает шаблон RabbitTemplate с JSON-конвертером.
      *
      * @param connectionFactory фабрика соединений
      * @return настроенный RabbitTemplate
-     */
+     *//*
+
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
@@ -77,12 +86,14 @@ public class RabbitMqPaymentServiceConfig {
         return rabbitTemplate;
     }
 
-    /**
+    */
+/**
      * Создает фабрику слушателей с JSON-конвертером.
      *
      * @param connectionFactory фабрика соединений
      * @return фабрика слушателей
-     */
+     *//*
+
     @Bean
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
@@ -93,11 +104,13 @@ public class RabbitMqPaymentServiceConfig {
         return factory;
     }
 
-    /**
+    */
+/**
      * Создает JSON-конвертер сообщений с маппингом классов.
      *
      * @return JSON-конвертер
-     */
+     *//*
+
     @Bean
     public JacksonJsonMessageConverter jsonConverter() {
         JacksonJsonMessageConverter converter = new JacksonJsonMessageConverter();
@@ -106,11 +119,13 @@ public class RabbitMqPaymentServiceConfig {
         return converter;
     }
 
-    /**
+    */
+/**
      * Создает маппер классов для JSON-конвертера.
      *
      * @return маппер классов
-     */
+     *//*
+
     @Bean
     public DefaultClassMapper classMapper() {
         DefaultClassMapper classMapper = new DefaultClassMapper();
@@ -124,3 +139,4 @@ public class RabbitMqPaymentServiceConfig {
     }
 
 }
+*/

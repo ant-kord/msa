@@ -18,12 +18,12 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Optional;
 
-@Slf4j
+/*@Slf4j
 @RequiredArgsConstructor
-@Component
+@Component*/
 public class PaymentClient {
 
-    private final PaymentFeignClient paymentFeignClient;
+   /* private final PaymentFeignClient paymentFeignClient;
     private final JsonMapper jsonMapper;
 
     @Retry(name = "paymentServiceRetry")
@@ -64,5 +64,5 @@ public class PaymentClient {
 
     private boolean isAcceptable(HttpStatusCode httpStatusCode) {
         return httpStatusCode.is2xxSuccessful() || httpStatusCode.is3xxRedirection();
-    }
+    }*/
 }

@@ -5,14 +5,13 @@ import com.example.delivery.entity.Delivery;
 import com.example.delivery.dto.AddressDTO;
 import com.example.delivery.dto.request.DeliveryRequest;
 import com.example.delivery.enums.DeliveryStatus;
-import com.example.delivery.integration.order.dto.response.DeliveryCreatedResponseMessage;
+import com.example.delivery.integration.order.dto.message.OrderCreationStatus;
+import com.example.delivery.integration.order.dto.message.OrderCreationStatusMessage;
 import com.example.delivery.repository.DeliveryRepository;
 import com.example.delivery.service.DeliveryService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.header.internals.RecordHeader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -30,10 +29,10 @@ import java.util.UUID;
 public class DeliveryServiceImpl implements DeliveryService {
 
     private final DeliveryRepository repository;
-    private final KafkaTemplate<String, DeliveryCreatedResponseMessage> kafkaTemplate;
+    private final KafkaTemplate<String, OrderCreationStatusMessage> kafkaTemplate;
 
-    @Value("${kafka.service.order.delivery-created-topic}")
-    private String deliveryCreatedTopic;
+    @Value("${kafka.service.order.order-creation-status-topic}")
+    private String orderCreationStatusTopic;
 
     @Transactional
     @Override
@@ -60,11 +59,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         repository.save(delivery);
         log.info("Delivery created with ID: {}", delivery.getId());
 
-        sendMessage(orderId, delivery);
-
-        /*var responseMessage = new DeliveryCreatedResponseMessage(orderId, UUID.fromString(delivery.getId()));
-        kafkaTemplate.send(deliveryCreatedTopic, delivery.getId(), responseMessage);
-        log.info("Sent delivery creation message to Kafka for ID: {}", delivery.getId());*/
+        sendStatusMessage(orderId);
 
         return delivery;
     }
@@ -115,22 +110,21 @@ public class DeliveryServiceImpl implements DeliveryService {
         }).orElse(false);
     }
 
-
-    private void sendMessage(UUID orderId, Delivery delivery) {
-        var responseMessage = new DeliveryCreatedResponseMessage(orderId, UUID.fromString(delivery.getId()));
-        // Заголовок с идемпотентным ключем
-        RecordHeader recordHeader = new RecordHeader("X-Idempotency-Key", UUID.randomUUID().toString().getBytes());
-
-        // Для тестирования повторных запросов
-        //RecordHeader recordHeader = new RecordHeader("X-Idempotency-Key", "40f14dc4-c91e-4b69-93d7-011028b0a223".getBytes());
-
-        // Создаем ProducerRecord для полной кастомизации отправки сообщения в Kafka
-        var producerRecord = new ProducerRecord<String, DeliveryCreatedResponseMessage>(
-                deliveryCreatedTopic, null, null, null, responseMessage, List.of(recordHeader));
-
-        kafkaTemplate.send(producerRecord);
-        log.info("Sent delivery creation message to Kafka for ID: {}", delivery.getId());
+    @Override
+    public void deleteByOrderId(String orderId) {
+        repository.deleteByOrderId(orderId);
     }
+
+    private void sendStatusMessage(UUID orderId) {
+        var statusMessage = OrderCreationStatusMessage.builder()
+                .orderId(orderId)
+                .status(OrderCreationStatus.DELIVERY_CREATED)
+                .build();
+
+        kafkaTemplate.send(orderCreationStatusTopic, statusMessage);
+        log.info("Sent delivery creation message to Kafka for orderId ID: {}", orderId);
+    }
+
 
 
 

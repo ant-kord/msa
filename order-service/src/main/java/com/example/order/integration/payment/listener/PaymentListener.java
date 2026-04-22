@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 /**
  * Класс слушателя очереди сообщений RabbitMQ для обработки ответов об оплате заказа.
  */
-@Component
-@RequiredArgsConstructor
-@Slf4j
+//@Component
+//@RequiredArgsConstructor
+//@Slf4j
 public class PaymentListener {
 
-    private final OrderService orderService;
+    //private final OrderService orderService;
 
     /**
      * Обработчик сообщений из очереди RabbitMQ.
@@ -23,10 +23,10 @@ public class PaymentListener {
      *
      * @param response сообщение о об оплате
      */
-    @RabbitListener(queues = "${rabbitmq.service.payment.queue-response-name}")
+    //@RabbitListener(queues = "${rabbitmq.service.payment.queue-response-name}")
     public void handle(PaymentResponseMessage response) {
-        log.info("Payment response: orderId={}, status={}", response.orderId(), response.status());
+        /*log.info("Payment response: orderId={}, status={}", response.orderId(), response.status());
         orderService.changePaymentStatus(response);
-        log.info("Successfully updated order status for orderId={}", response.orderId());
+        log.info("Successfully updated order status for orderId={}", response.orderId());*/
     }
 }

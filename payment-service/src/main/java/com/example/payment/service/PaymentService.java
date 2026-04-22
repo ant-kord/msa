@@ -2,16 +2,15 @@ package com.example.payment.service;
 
 import com.example.payment.entity.Payment;
 import com.example.payment.dto.request.PaymentRequest;
-import com.example.payment.integration.order.dto.request.PaymentRequestMessage;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface PaymentService {
 
     Payment createPayment(PaymentRequest request);
 
-    Payment createPayment(PaymentRequestMessage request);
+    Payment createPayment(UUID orderId, UUID customerId, double amount);
 
     Optional<Payment> getPayment(String id);
 
@@ -20,5 +19,7 @@ public interface PaymentService {
     Optional<Payment> updatePayment(String id, PaymentRequest request);
 
     boolean deletePayment(String id);
+
+    void deleteByOrderId(String orderId);
 
 }
