@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.json.JsonMapper;
 
-@Component
-@Slf4j
+//@Component
+//@Slf4j
 public class DeliveryCreatedListener extends IdempotentKafkaListener<DeliveryCreatedResponseMessage> {
 
 
@@ -21,21 +21,21 @@ public class DeliveryCreatedListener extends IdempotentKafkaListener<DeliveryCre
         super(asyncMessageService, jsonMapper);
     }
 
-    @KafkaListener(
+    /*@KafkaListener(
             topics = "${kafka.service.delivery.delivery-created-topic}",
             groupId = "${spring.kafka.consumer.group-id}"
-    )
+    )*/
     @Override
     public void consume(DeliveryCreatedResponseMessage message,
                         ConsumerRecord<String, DeliveryCreatedResponseMessage> record,
                         Acknowledgment ack) throws JsonProcessingException {
-        log.info("Received delivery created event");
+        //log.info("Received delivery created event");
         super.consume(message, record, ack);
     }
 
     @Transactional
     @Override
     public void processConsumedMessage(DeliveryCreatedResponseMessage message) {
-        log.info("Consumed delivery created response message: " + message);
+        //log.info("Consumed delivery created response message: " + message);
     }
 }

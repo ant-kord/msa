@@ -37,7 +37,7 @@ spring:
       properties:
         spring.json.use.type.headers: false # Отключение использования заголовков типа JSON
         spring.json.trusted.packages: "*" # Разрешение доверять любым пакетам при десериализации
-        spring.json.value.default.type: "com.example.delivery.integration.order.dto.request.OrderPaidRequestMessage" # Тип по умолчанию для десериализации JSON
+        spring.json.value.default.type: "com.example.delivery.integration.order.dto.message.OrderCreationStatusMessage" # Тип по умолчанию для десериализации JSON
 
 
 logging:
@@ -60,5 +60,4 @@ resilience4j:
 kafka:
   service:
     order:
-      order-paid-topic: order.paid
-      delivery-created-topic: delivery.created
+      order-creation-status-topic: order.creation.status

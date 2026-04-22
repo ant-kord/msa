@@ -22,4 +22,6 @@ public interface DeliveryService {
 
     boolean deleteDelivery(String id);
 
+    void deleteByOrderId(String orderId);
+
 }

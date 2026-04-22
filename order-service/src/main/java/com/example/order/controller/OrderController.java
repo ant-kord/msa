@@ -38,6 +38,7 @@ public class OrderController implements OrderControllerDoc {
                 return ResponseEntity.status(500).build();
             }*/
 
+            log.info("Create order request: {}", request);
             Order created = orderService.createOrder(request);
             return new ResponseEntity<>(toResponse(created), HttpStatus.CREATED);
         } catch (IllegalArgumentException ex) {
