@@ -37,7 +37,7 @@ spring:
       properties:
         spring.json.use.type.headers: false # Отключение использования заголовков типа JSON
         spring.json.trusted.packages: "*" # Разрешение доверять любым пакетам при десериализации
-        spring.json.value.default.type: "com.example.delivery.integration.order.dto.message.OrderCreationStatusMessage" # Тип по умолчанию для десериализации JSON
+        spring.json.value.default.type: "com.example.delivery.integration.order.dto.request.DeliveryRequestMessage" # Тип по умолчанию для десериализации JSON
 
 
 logging:
@@ -61,3 +61,6 @@ kafka:
   service:
     order:
       order-creation-status-topic: order.creation.status
+    delivery:
+      delivery-create-request: delivery.create.request
+      delivery-delete-request: delivery.delete.request

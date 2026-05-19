@@ -48,18 +48,15 @@ public class OrderCreationStatusListener {
 
         log.info("Received order creation message: {}", message);
 
-        if (status == OrderCreationStatus.PAID) {
-            orderService.changeOrderStatus(message.orderId(), OrderStatus.PAID);
+        if (status == OrderCreationStatus.COMPLETED) {
+            orderService.changeOrderStatus(message.orderId(), OrderStatus.COMPLETED);
             log.info("Order status message '%s' and changed order status to '%s'"
-                    .formatted(status, OrderStatus.PAID));
+                    .formatted(status, OrderStatus.COMPLETED));
 
-        } else if (status == OrderCreationStatus.DELIVERY_CREATED) {
-            orderService.changeOrderStatus(message.orderId(), OrderStatus.CONFIRMED);
+        } else if (status == OrderCreationStatus.CANCELLED) {
+            orderService.changeOrderStatus(message.orderId(), OrderStatus.CANCELLED);
             log.info("Order status message '%s' and changed order status to '%s'"
-                    .formatted(status, OrderStatus.CONFIRMED));
-        } else if (ERROR_STATUS.contains(status)) {
-            orderService.cancelOrder(message.orderId());
-            log.info("Order status message '%s' and cancelled order".formatted(status));
+                    .formatted(status, OrderStatus.CANCELLED));
         }
 
         ack.acknowledge();

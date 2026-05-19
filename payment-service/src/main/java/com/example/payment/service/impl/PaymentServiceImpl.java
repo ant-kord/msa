@@ -73,6 +73,31 @@ public class PaymentServiceImpl implements PaymentService {
         return payment;
     }
 
+    @Transactional
+    @Override
+    public Payment createPayment(UUID orderId, double amount) {
+        log.info("Create payment orderId: {}", orderId);
+        var payment = Payment.builder()
+                .orderId(String.valueOf(orderId))
+                .amount(amount)
+                .build();
+
+        boolean paymentCompleted = tryProcessPayment(orderId);
+
+        if (paymentCompleted) {
+            payment.setStatus(PaymentStatus.COMPLETED);
+        } else {
+            payment.setStatus(PaymentStatus.FAILED);
+        }
+        paymentRepository.save(payment);
+        log.info("Payment created: {}", payment);
+
+        sendStatusMessage(orderId, payment.getStatus());
+
+
+        return payment;
+    }
+
     @Override
     public Optional<Payment> getPayment(String id) {
         if (id == null || id.isBlank()) return Optional.empty();

@@ -10,6 +10,8 @@ public interface PaymentService {
 
     Payment createPayment(PaymentRequest request);
 
+    Payment createPayment(UUID orderId, double amount);
+
     Payment createPayment(UUID orderId, UUID customerId, double amount);
 
     Optional<Payment> getPayment(String id);

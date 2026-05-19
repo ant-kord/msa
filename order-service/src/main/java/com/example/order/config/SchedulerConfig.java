@@ -7,8 +7,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-@Configuration
-@EnableScheduling
+//@Configuration
+//@EnableScheduling
 public class SchedulerConfig {
 
     @Bean
