@@ -50,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
     private final JsonMapper mapper;
     private final AsyncMessageService asyncMessageService;
 
-    private final KafkaTemplate<String, OrderPaidRequestMessage> kafkaTemplate;
+    private final KafkaTemplate<String, OrderCreationStatusMessage> kafkaTemplate;
 
     @Value("${kafka.service.order.order-creation-status-topic}")
     private String orderCreationStatusTopic;
@@ -60,7 +60,11 @@ public class OrderServiceImpl implements OrderService {
     public Order createOrder(OrderRequest request) {
         Order orderSaved = createAndSaveOrder(request);
         log.info("Order created: {}", orderSaved);
-        createAndSaveOrderCreationStatusMessage(orderSaved, OrderCreationStatus.PENDING);
+        sendStatusMessage(
+                UUID.fromString(orderSaved.getId()),
+                UUID.fromString(orderSaved.getCustomerId()),
+                orderSaved.getTotalAmount());
+        //createAndSaveOrderCreationStatusMessage(orderSaved, OrderCreationStatus.PENDING);
         //sendPaymentMessage(orderSaved);
         return orderSaved;
     }
@@ -208,6 +212,18 @@ public class OrderServiceImpl implements OrderService {
         log.info("Order saved: {}", orderSaved);
         return orderSaved;
     }
+
+    private void sendStatusMessage(UUID orderId, UUID customerId, double amount) {
+        var statusMessage = OrderCreationStatusMessage.builder()
+                .orderId(orderId)
+                .customerId(customerId)
+                .amount(amount)
+                .status(OrderCreationStatus.PENDING)
+                .build();
+
+        kafkaTemplate.send(orderCreationStatusTopic, statusMessage);
+    }
+
 
     private void sendPaymentMessage(Order order) {
         PaymentRequestMessage requestMessage = PaymentRequestMessage.builder()

@@ -15,21 +15,21 @@ import tools.jackson.databind.json.JsonMapper;
 /**
  * Класс для обработки и отправки асинхронных сообщений через Kafka.
  */
-@Component
+/*@Component
 @RequiredArgsConstructor
 @Slf4j
 public class AsyncMessageSenderProcessor {
 
-    private final AsyncMessageService asyncMessageService;
+    /*private final AsyncMessageService asyncMessageService;
     private final KafkaTemplate<String, OrderCreationStatusMessage> kafkaTemplate;
     private final JsonMapper mapper;
 
-    /**
+    *//**
      * Отправляет асинхронное сообщение через Kafka и обновляет его статус.
      * Оборачивается в транзакцию для обеспечения атомарности.
      *
      * @param message сообщение, которое необходимо отправить
-     */
+     *//*
     @Transactional
     public void sendMessage(AsyncMessage message) {
         try {
@@ -46,4 +46,4 @@ public class AsyncMessageSenderProcessor {
             throw new SendingAsyncMessageException("Error on sending message '%s'".formatted(message), e);
         }
     }
-}
+}*/

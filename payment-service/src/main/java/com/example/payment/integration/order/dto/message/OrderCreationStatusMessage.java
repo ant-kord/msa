@@ -8,7 +8,6 @@ import java.util.UUID;
 public record OrderCreationStatusMessage(
         UUID orderId,
         UUID paymentId,
-        UUID customerId,
         double amount,
         OrderCreationStatus status
 ) {
