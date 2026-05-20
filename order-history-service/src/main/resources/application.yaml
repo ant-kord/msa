@@ -1,0 +1,38 @@
+server:
+  port: 8084
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/
+      database: order-history-service-db
+  kafka:
+    bootstrap-servers: localhost:9093
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+    listener:
+      ack-mode: manual
+      observation-enabled: true
+    template:
+      observation-enabled: true
+    consumer:
+      group-id: order-history-service-consumers
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      auto-offset-reset: latest
+      enable-auto-commit: false
+      properties:
+        spring.json.use.type.headers: false
+        spring.json.trusted.packages: "*"
+
+kafka:
+  service:
+    order:
+      order-creation-status-topic: order.creation.status
+    delivery:
+      delivery-events-topic: delivery.create.events
+    payment:
+      payment-events-topic: payment.create.events

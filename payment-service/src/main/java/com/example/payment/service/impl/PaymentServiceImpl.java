@@ -4,6 +4,7 @@ import com.example.payment.entity.Payment;
 import com.example.payment.entity.PaymentDetails;
 import com.example.payment.dto.PaymentDetailsDTO;
 import com.example.payment.dto.request.PaymentRequest;
+import com.example.payment.enums.PaymentMethod;
 import com.example.payment.enums.PaymentStatus;
 import com.example.payment.integration.order.dto.message.OrderCreationStatus;
 import com.example.payment.integration.order.dto.message.OrderCreationStatusMessage;
@@ -54,6 +55,7 @@ public class PaymentServiceImpl implements PaymentService {
         var payment = Payment.builder()
                 .orderId(String.valueOf(orderId))
                 .customerId(String.valueOf(customerId))
+                .method(PaymentMethod.BANK_TRANSFER)
                 .amount(amount)
                 .build();
 
@@ -67,7 +69,7 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.save(payment);
         log.info("Payment created: {}", payment);
 
-        sendStatusMessage(orderId, payment.getStatus());
+        sendStatusMessage(orderId, payment.getMethod(), payment.getStatus());
 
 
         return payment;
@@ -92,7 +94,7 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.save(payment);
         log.info("Payment created: {}", payment);
 
-        sendStatusMessage(orderId, payment.getStatus());
+        sendStatusMessage(orderId, payment.getMethod(), payment.getStatus());
 
 
         return payment;
@@ -143,9 +145,10 @@ public class PaymentServiceImpl implements PaymentService {
         return Math.random() > 0.2;
     }
 
-    private void sendStatusMessage(UUID orderId, PaymentStatus status) {
+    private void sendStatusMessage(UUID orderId, PaymentMethod method, PaymentStatus status) {
         var statusMessage = OrderCreationStatusMessage.builder()
                 .orderId(orderId)
+                .paymentMethod(method)
                 .status(status.equals(PaymentStatus.COMPLETED) ? OrderCreationStatus.PAID : OrderCreationStatus.PAID_ERROR)
                 .build();
 
