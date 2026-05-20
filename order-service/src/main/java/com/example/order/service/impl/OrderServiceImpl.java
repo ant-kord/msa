@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import tools.jackson.databind.json.JsonMapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -181,7 +182,7 @@ public class OrderServiceImpl implements OrderService {
         var orderMessage = OrderCreationStatusMessage.builder()
                 .orderId(UUID.fromString(order.getId()))
                 .customerId(UUID.fromString(order.getCustomerId()))
-                .amount(order.getTotalAmount())
+                .amount(BigDecimal.valueOf(order.getTotalAmount()))
                 .status(status)
                 .build();
 
@@ -217,7 +218,7 @@ public class OrderServiceImpl implements OrderService {
         var statusMessage = OrderCreationStatusMessage.builder()
                 .orderId(orderId)
                 .customerId(customerId)
-                .amount(amount)
+                .amount(BigDecimal.valueOf(amount))
                 .status(OrderCreationStatus.PENDING)
                 .build();
 

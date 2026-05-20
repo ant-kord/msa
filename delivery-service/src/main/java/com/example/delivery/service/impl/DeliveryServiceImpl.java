@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
@@ -55,11 +56,12 @@ public class DeliveryServiceImpl implements DeliveryService {
         var delivery = Delivery.builder()
                 .orderId(orderId.toString())
                 .status(DeliveryStatus.CREATED)
+                .createdAt(OffsetDateTime.now())
                 .build();
         repository.save(delivery);
         log.info("Delivery created with ID: {}", delivery.getId());
 
-        sendStatusMessage(orderId);
+        sendStatusMessage(orderId, delivery.getCreatedAt());
 
         return delivery;
     }
@@ -115,9 +117,10 @@ public class DeliveryServiceImpl implements DeliveryService {
         repository.deleteByOrderId(orderId);
     }
 
-    private void sendStatusMessage(UUID orderId) {
+    private void sendStatusMessage(UUID orderId, OffsetDateTime createdAt) {
         var statusMessage = OrderCreationStatusMessage.builder()
                 .orderId(orderId)
+                .createdAt(createdAt.toZonedDateTime())
                 .status(OrderCreationStatus.DELIVERY_CREATED)
                 .build();
 

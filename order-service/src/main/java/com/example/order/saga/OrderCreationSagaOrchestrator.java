@@ -69,7 +69,7 @@ public class OrderCreationSagaOrchestrator {
         var paidReservation = PaymentRequestMessage.builder()
                 .orderId(orderId)
                 .customerId(message.customerId())
-                .amount(message.amount())
+                .amount(message.amount().doubleValue())
                 .build();
 
         kafkaTemplate.send("payment.create.request", paidReservation);

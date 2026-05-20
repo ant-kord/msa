@@ -1,9 +1,9 @@
-package com.example.order.dto.message;
+package com.example.order.history.integretaion.order.dto;
 
-import com.example.order.integration.payment.dto.enums.PaymentMethod;
 import lombok.Builder;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Builder
@@ -14,6 +14,7 @@ public record OrderCreationStatusMessage(
         String customerName,
         BigDecimal amount,
         PaymentMethod paymentMethod,
+        ZonedDateTime createdAt,
         OrderCreationStatus status
 ) {
 }
